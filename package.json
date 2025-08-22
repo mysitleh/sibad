@@ -1,0 +1,43 @@
+{
+  "name": "sibad-tournament-system",
+  "version": "1.0.0",
+  "description": "🏸 Sistem Informasi Badminton Tournament - Complete tournament management system",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8080",
+    "start": "python -m http.server 8080",
+    "deploy": "vercel --prod",
+    "build": "echo 'Static site - no build needed'",
+    "preview": "vercel"
+  },
+  "keywords": [
+    "badminton",
+    "tournament",
+    "management",
+    "sports",
+    "competition",
+    "bracket",
+    "responsive",
+    "javascript"
+  ],
+  "author": "SIBAD Development Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/sibad-tournament.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/sibad-tournament/issues"
+  },
+  "homepage": "https://sibad-tournament.vercel.app",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

@@ -1,0 +1,3870 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Tournament</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Base Styles */
+        body { 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Animation Styles */
+        .spin-animation {
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Gradient Background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* Hover Effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Mobile-First Responsive Design */
+        
+        /* Extra Small Devices (phones, 320px and up) */
+        @media (max-width: 374px) {
+            .header-title {
+                font-size: 1.25rem !important;
+            }
+            .player-count {
+                font-size: 1.5rem !important;
+            }
+            .nav-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            .nav-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            .tab-btn {
+                min-width: 80px;
+                flex-shrink: 0;
+            }
+            .btn-responsive {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.75rem !important;
+            }
+            .modal-mobile {
+                margin: 0.5rem !important;
+                max-width: calc(100vw - 1rem) !important;
+            }
+        }
+        
+        /* Small Devices (landscape phones, 576px and up) */
+        @media (max-width: 639px) {
+            .container-mobile {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            .grid-mobile-1 {
+                grid-template-columns: 1fr;
+            }
+            .flex-mobile-col {
+                flex-direction: column;
+            }
+            .space-mobile-y > * + * {
+                margin-top: 0.75rem;
+            }
+            .text-mobile-sm {
+                font-size: 0.875rem;
+            }
+            .bracket-container {
+                overflow-x: auto;
+                padding: 1rem 0;
+            }
+            .bracket-round {
+                min-width: 200px;
+            }
+            .player-table {
+                overflow-x: auto;
+            }
+            .player-table table {
+                min-width: 500px;
+            }
+            .expense-card {
+                padding: 0.75rem !important;
+            }
+            .expense-actions {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+        
+        /* Medium Devices (tablets, 768px and up) */
+        @media (min-width: 640px) and (max-width: 1023px) {
+            .tablet-grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tablet-text-base {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Large Devices (desktops, 1024px and up) */
+        @media (min-width: 1024px) {
+            .desktop-grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .desktop-grid-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* Touch-Friendly Buttons */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* Responsive Typography */
+        .responsive-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+        }
+        .responsive-subtitle {
+            font-size: clamp(0.875rem, 2.5vw, 1rem);
+        }
+        .responsive-text {
+            font-size: clamp(0.75rem, 2vw, 0.875rem);
+        }
+        
+        /* Responsive Spacing */
+        .responsive-padding {
+            padding: clamp(1rem, 3vw, 2rem);
+        }
+        .responsive-margin {
+            margin: clamp(0.5rem, 2vw, 1rem);
+        }
+        
+        /* Safe Area Support for iOS */
+        @supports (padding: max(0px)) {
+            .safe-area-inset {
+                padding-left: max(1rem, env(safe-area-inset-left));
+                padding-right: max(1rem, env(safe-area-inset-right));
+            }
+            .safe-area-bottom {
+                padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .dark-mode-text {
+                color: #f3f4f6;
+            }
+        }
+        
+        /* Reduce Motion for Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .card-hover {
+                transition: none;
+            }
+            .card-hover:hover {
+                transform: none;
+            }
+            .spin-animation {
+                animation: none;
+            }
+        }
+        
+        /* Focus Styles for Accessibility */
+        .focus-ring:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-friendly {
+                background: white !important;
+                color: black !important;
+            }
+        }
+        
+        /* Menu Hover Effects - Catchy Animations */
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            color: #4f46e5 !important;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            transform: translateX(-50%);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1px;
+        }
+        
+        .tab-btn:hover::before {
+            width: 100%;
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(79, 70, 229, 0.1);
+            transform: translate(-50%, -50%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .tab-btn:hover::after {
+            width: 120%;
+            height: 200%;
+        }
+        
+        .tab-btn.active {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+        }
+        
+        .tab-btn.active::before {
+            width: 100%;
+        }
+        
+        /* Smooth scale animation on hover */
+        .tab-btn span {
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tab-btn:hover span {
+            transform: scale(1.05);
+        }
+        
+        /* Ripple effect for touch devices */
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .tab-btn:active::after {
+            animation: ripple 0.6s linear;
+        }
+        
+        /* Mobile-specific hover effects */
+        @media (max-width: 768px) {
+            .tab-btn:hover {
+                transform: none;
+                background: rgba(79, 70, 229, 0.05);
+                border-radius: 0.5rem 0.5rem 0 0;
+            }
+        }
+        
+        /* Button Hover Enhancements */
+        .hover-lift {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hover-lift:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Card Hover Effects Enhancement */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #e0e7ff;
+        }
+        
+        /* Gradient Button Hover */
+        .gradient-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .gradient-btn:hover::before {
+            left: 100%;
+        }
+        
+        .gradient-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Icon Rotation on Hover */
+        .icon-rotate {
+            transition: transform 0.3s ease;
+        }
+        
+        .icon-rotate:hover {
+            transform: rotate(360deg);
+        }
+        
+        /* Pulse Animation for Active Elements */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(79, 70, 229, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            }
+        }
+        
+        .pulse-active {
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto container-mobile safe-area-inset py-4 lg:py-6">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center space-x-3 lg:space-x-4">
+                    <div class="w-10 h-10 lg:w-12 lg:h-12 gradient-bg rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 lg:w-6 lg:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <h1 class="header-title responsive-title font-bold text-gray-900 truncate">Badminton Tournament</h1>
+                        <p class="responsive-subtitle text-gray-500 hidden sm:block">Championship Management</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 lg:space-x-4">
+                    <button onclick="showStoragePanel()" title="Ctrl+Shift+S untuk panel storage" class="hidden bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 lg:px-4 lg:py-2 rounded-lg transition-colors text-sm font-medium flex items-center space-x-2 touch-target">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                        <span class="hidden sm:inline">Storage</span>
+                        <span id="storageStatus" class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">5d</span>
+                    </button>
+                    <div class="text-center">
+                        <div class="player-count text-2xl lg:text-3xl font-bold text-gray-900" id="totalPeserta">16</div>
+                        <div class="responsive-text text-gray-500">Players</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto container-mobile safe-area-inset">
+            <div class="nav-tabs flex space-x-4 lg:space-x-8 overflow-x-auto pb-px">
+                <button onclick="showTab('peserta')" class="tab-btn active py-3 lg:py-4 px-3 lg:px-4 border-b-2 border-indigo-500 text-indigo-600 font-medium whitespace-nowrap touch-target focus-ring" id="tab-peserta">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="text-sm lg:text-base">Pemain</span>
+                    </div>
+                </button>
+                <button onclick="showTab('spin')" class="tab-btn py-3 lg:py-4 px-3 lg:px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap touch-target focus-ring" id="tab-spin">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="text-sm lg:text-base">Tim</span>
+                    </div>
+                </button>
+                <button onclick="showTab('keuangan')" class="tab-btn py-3 lg:py-4 px-3 lg:px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap touch-target focus-ring" id="tab-keuangan">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/>
+                        </svg>
+                        <span class="text-sm lg:text-base">Keuangan</span>
+                    </div>
+                </button>
+                <button onclick="showTab('bagan')" class="tab-btn py-3 lg:py-4 px-3 lg:px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap touch-target focus-ring" id="tab-bagan">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                        <span class="text-sm lg:text-base">Bagan</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto container-mobile safe-area-inset safe-area-bottom responsive-padding">
+        <!-- Tab Players -->
+        <div id="content-peserta" class="tab-content">
+            <div class="bg-white rounded-xl lg:rounded-2xl shadow-sm border border-gray-100 responsive-padding">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 space-mobile-y">
+                    <h2 class="responsive-title font-bold text-gray-900">Manajemen Pemain</h2>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="exportPlayersData()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2 touch-target focus-ring">
+                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
+                            </svg>
+                            <span class="text-sm lg:text-base">Ekspor</span>
+                        </button>
+                        <button onclick="showBulkImportModal()" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2 touch-target focus-ring hover-lift">
+                            <svg class="w-4 h-4 lg:w-5 lg:h-5 icon-rotate" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"/>
+                            </svg>
+                            <span class="text-sm lg:text-base">Impor Massal</span>
+                        </button>
+                        <button onclick="showAddPlayerModal()" class="gradient-btn text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2 touch-target focus-ring">
+                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+                            </svg>
+                            <span class="text-sm lg:text-base">Tambah Pemain</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Player Statistics -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6 lg:mb-8">
+                    <div class="bg-blue-50 rounded-lg lg:rounded-xl responsive-padding text-center card-hover hover-lift">
+                        <div class="text-xl lg:text-3xl font-bold text-blue-600" id="totalPlayers">0</div>
+                        <div class="responsive-text text-blue-600 mt-1">Total Pemain</div>
+                    </div>
+                    <div class="bg-green-50 rounded-lg lg:rounded-xl responsive-padding text-center card-hover hover-lift">
+                        <div class="text-xl lg:text-3xl font-bold text-green-600" id="paidPlayers">0</div>
+                        <div class="responsive-text text-green-600 mt-1">Sudah Bayar</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg lg:rounded-xl responsive-padding text-center card-hover hover-lift">
+                        <div class="text-xl lg:text-3xl font-bold text-yellow-600" id="avgScore">0</div>
+                        <div class="responsive-text text-yellow-600 mt-1">Rata-rata Skor</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg lg:rounded-xl responsive-padding text-center card-hover hover-lift">
+                        <div class="text-xl lg:text-3xl font-bold text-purple-600" id="topScore">0</div>
+                        <div class="responsive-text text-purple-600 mt-1">Skor Tertinggi</div>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="flex flex-col sm:flex-row flex-wrap gap-3 lg:gap-4 mb-4 lg:mb-6">
+                    <div class="flex-1 min-w-0 sm:min-w-64">
+                        <input type="text" id="searchPlayer" placeholder="Cari pemain..." 
+                               onkeyup="filterPlayers()" 
+                               class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring">
+                    </div>
+                    <select id="filterStatus" onchange="filterPlayers()" 
+                            class="px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring">
+                        <option value="all">Semua Pemain</option>
+                        <option value="paid">Sudah Bayar</option>
+                        <option value="unpaid">Belum Bayar</option>
+                    </select>
+                    <select id="sortBy" onchange="sortPlayers()" 
+                            class="px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring">
+                        <option value="name">Urutkan Nama</option>
+                        <option value="score">Urutkan Skor</option>
+                        <option value="payment">Urutkan Pembayaran</option>
+                    </select>
+                </div>
+
+                <!-- Players List -->
+                <div class="space-y-2 lg:space-y-3" id="daftarPeserta">
+                    <!-- Players will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Teams -->
+        <div id="content-spin" class="tab-content hidden">
+            <div class="bg-white rounded-xl lg:rounded-2xl shadow-sm border border-gray-100 responsive-padding">
+                <h2 class="responsive-title font-bold text-gray-900 mb-6 lg:mb-8">Team Formation</h2>
+                <div class="text-center mb-8 lg:mb-12">
+                    <div class="w-20 h-20 lg:w-24 lg:h-24 gradient-bg rounded-full mx-auto flex items-center justify-center mb-4 lg:mb-6 hover-lift pulse-active" id="spinWheel">
+                        <svg class="w-8 h-8 lg:w-10 lg:h-10 text-white icon-rotate" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <button onclick="spinPasangan()" class="gradient-btn text-white px-6 py-2 lg:px-8 lg:py-3 rounded-xl font-medium transition-colors touch-target focus-ring" id="spinBtn">
+                        <span class="text-sm lg:text-base">Generate Teams</span>
+                    </button>
+                </div>
+                <div id="hasilSpin" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
+                    <!-- Spin results will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Finance -->
+        <div id="content-keuangan" class="tab-content hidden">
+            <div class="bg-white rounded-xl lg:rounded-2xl shadow-sm border border-gray-100 responsive-padding">
+                <h2 class="responsive-title font-bold text-gray-900 mb-6 lg:mb-8">Financial Overview</h2>
+                
+                <!-- Financial Summary -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-12">
+                    <div class="bg-green-50 rounded-xl lg:rounded-2xl responsive-padding card-hover hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="responsive-text text-green-600 mb-1">Collected</div>
+                                <div class="text-lg lg:text-2xl font-bold text-green-700" id="totalTerkumpul">Rp 50.000</div>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-xl lg:rounded-2xl responsive-padding card-hover hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="responsive-text text-yellow-600 mb-1">Pending</div>
+                                <div class="text-lg lg:text-2xl font-bold text-yellow-700" id="totalBelumBayar">Rp 750.000</div>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-xl lg:rounded-2xl responsive-padding card-hover hover-lift">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="responsive-text text-blue-600 mb-1">Target</div>
+                                <div class="text-lg lg:text-2xl font-bold text-blue-700">Rp 800.000</div>
+                            </div>
+                            <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-5 h-5 lg:w-6 lg:h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses & Balance -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
+                    <div class="bg-gray-50 rounded-xl lg:rounded-2xl responsive-padding">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 lg:mb-6 space-mobile-y">
+                            <h3 class="text-base lg:text-lg font-semibold text-gray-900">Pengeluaran</h3>
+                            <button onclick="showAddExpenseModal()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 lg:px-4 lg:py-2 rounded-lg responsive-text font-medium transition-colors flex items-center space-x-2 touch-target focus-ring hover-lift">
+                                <svg class="w-4 h-4 icon-rotate" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+                                </svg>
+                                <span>Tambah</span>
+                            </button>
+                        </div>
+                        <div class="space-y-3 lg:space-y-4" id="daftarPengeluaran">
+                            <!-- Expenses will be loaded here -->
+                        </div>
+                        <div class="mt-4 lg:mt-6 pt-3 lg:pt-4 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900 responsive-text">Total</span>
+                                <span class="font-bold text-gray-900 responsive-text" id="totalPengeluaran">Rp 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl lg:rounded-2xl responsive-padding">
+                        <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-4 lg:mb-6">Summary</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Income</span>
+                                <span class="font-medium text-gray-900" id="ringkasanPemasukan">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Expenses</span>
+                                <span class="font-medium text-gray-900" id="ringkasanPengeluaran">Rp 0</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-4">
+                                <div class="flex justify-between">
+                                    <span class="font-semibold text-gray-900">Balance</span>
+                                    <span class="font-bold text-gray-900" id="saldoAkhir">Rp 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="overflow-hidden">
+                    <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-4 lg:mb-6">Payment Status</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-full">
+                            <thead>
+                                <tr class="border-b border-gray-100">
+                                    <th class="px-3 py-3 lg:px-6 lg:py-4 text-left responsive-text font-medium text-gray-500">Player</th>
+                                    <th class="px-3 py-3 lg:px-6 lg:py-4 text-left responsive-text font-medium text-gray-500">Amount</th>
+                                    <th class="px-3 py-3 lg:px-6 lg:py-4 text-left responsive-text font-medium text-gray-500">Status</th>
+                                    <th class="px-3 py-3 lg:px-6 lg:py-4 text-left responsive-text font-medium text-gray-500">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelKeuangan" class="divide-y divide-gray-50">
+                                <!-- Financial data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Bracket -->
+        <div id="content-bagan" class="tab-content hidden">
+            <div class="bg-white rounded-xl lg:rounded-2xl shadow-sm border border-gray-100 responsive-padding">
+                <h2 class="responsive-title font-bold text-gray-900 mb-6 lg:mb-8">Tournament Bracket</h2>
+                <div class="mb-6 lg:mb-8 flex flex-col sm:flex-row gap-3 lg:gap-4">
+                    <button onclick="generateBagan()" class="gradient-btn text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl font-medium transition-colors touch-target focus-ring">
+                        <span class="text-sm lg:text-base">Generate Bracket</span>
+                    </button>
+                    <button onclick="debugBracket()" class="hidden bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl font-medium transition-colors touch-target hover-lift">
+                        🔍 Debug Info
+                    </button>
+                    <button onclick="createTestTeams()" class="hidden bg-green-500 hover:bg-green-600 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl font-medium transition-colors touch-target hover-lift">
+                        🧪 Create Test Teams
+                    </button>
+                </div>
+                <div id="baganTurnamen" class="bracket-container overflow-x-auto">
+                    <!-- Bracket will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== PLAYER CRUD MANAGEMENT =====
+        
+        function showAddPlayerModal() {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onclick="this.remove()">
+                    <div class="bg-white rounded-xl lg:rounded-2xl responsive-padding max-w-md w-full modal-mobile" onclick="event.stopPropagation()">
+                        <h3 class="responsive-title font-bold text-gray-900 mb-4 lg:mb-6">Tambah Pemain Baru</h3>
+                        
+                        <form onsubmit="addNewPlayer(event)">
+                            <div class="space-y-3 lg:space-y-4">
+                                <div>
+                                    <label class="block responsive-text font-medium text-gray-700 mb-2">Nama Pemain *</label>
+                                    <input type="text" id="newPlayerName" required 
+                                           class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring"
+                                           placeholder="Masukkan nama pemain">
+                                </div>
+                                
+                                <div>
+                                    <label class="block responsive-text font-medium text-gray-700 mb-2">Skor Keahlian (1-100) *</label>
+                                    <input type="number" id="newPlayerScore" required min="1" max="100" value="50"
+                                           class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring"
+                                           placeholder="Masukkan skor keahlian">
+                                    <div class="text-xs lg:text-sm text-gray-500 mt-1">Nilai keahlian pemain dari 1 (pemula) hingga 100 (ahli)</div>
+                                </div>
+                                
+                                <div>
+                                    <label class="flex items-center space-x-3 touch-target">
+                                        <input type="checkbox" id="newPlayerPaid" 
+                                               class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 touch-target">
+                                        <span class="responsive-text text-gray-700">Pembayaran selesai (Rp 50.000)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-3 mt-6 lg:mt-8">
+                                <button type="button" onclick="this.closest('.fixed').remove()" 
+                                        class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                    Tambah Pemain
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Focus on name input
+            setTimeout(() => {
+                document.getElementById('newPlayerName').focus();
+            }, 100);
+        }
+
+        function addNewPlayer(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('newPlayerName').value.trim();
+            const score = parseInt(document.getElementById('newPlayerScore').value);
+            const paid = document.getElementById('newPlayerPaid').checked;
+            
+            if (!name) {
+                showStorageNotification('Nama pemain wajib diisi!', 'error');
+                return;
+            }
+            
+            // Check if player already exists
+            const existingPlayer = pesertaData.find(p => p.nama.toLowerCase() === name.toLowerCase());
+            if (existingPlayer) {
+                showStorageNotification('Pemain dengan nama ini sudah ada!', 'error');
+                return;
+            }
+            
+            // Add new player
+            const newPlayer = {
+                nama: name,
+                bayar: paid,
+                skor: score
+            };
+            
+            pesertaData.push(newPlayer);
+            
+            // Auto-save
+            autoSaveTournamentData('manual');
+            
+            // Refresh UI
+            loadPeserta();
+            loadKeuangan();
+            updatePlayerStats();
+            
+            // Close modal
+            event.target.closest('.fixed').remove();
+            
+            showStorageNotification(`Pemain "${name}" berhasil ditambahkan!`, 'success');
+        }
+
+        function showEditPlayerModal(playerIndex) {
+            const player = pesertaData[playerIndex];
+            if (!player) return;
+            
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onclick="this.remove()">
+                    <div class="bg-white rounded-xl lg:rounded-2xl responsive-padding max-w-md w-full modal-mobile" onclick="event.stopPropagation()">
+                        <h3 class="responsive-title font-bold text-gray-900 mb-4 lg:mb-6">Edit Pemain</h3>
+                        
+                        <form onsubmit="updatePlayer(event, ${playerIndex})">
+                            <div class="space-y-3 lg:space-y-4">
+                                <div>
+                                    <label class="block responsive-text font-medium text-gray-700 mb-2">Nama Pemain *</label>
+                                    <input type="text" id="editPlayerName" required value="${player.nama}"
+                                           class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring"
+                                           placeholder="Masukkan nama pemain">
+                                </div>
+                                
+                                <div>
+                                    <label class="block responsive-text font-medium text-gray-700 mb-2">Skor Keahlian (1-100) *</label>
+                                    <input type="number" id="editPlayerScore" required min="1" max="100" value="${player.skor}"
+                                           class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 responsive-text touch-target focus-ring"
+                                           placeholder="Masukkan skor keahlian">
+                                    <div class="text-xs lg:text-sm text-gray-500 mt-1">Nilai keahlian pemain dari 1 (pemula) hingga 100 (ahli)</div>
+                                </div>
+                                
+                                <div>
+                                    <label class="flex items-center space-x-3 touch-target">
+                                        <input type="checkbox" id="editPlayerPaid" ${player.bayar ? 'checked' : ''}
+                                               class="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 touch-target">
+                                        <span class="responsive-text text-gray-700">Pembayaran selesai (Rp 50.000)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-2 lg:gap-3 mt-6 lg:mt-8">
+                                <button type="button" onclick="deletePlayer(${playerIndex}); this.closest('.fixed').remove();" 
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                    🗑️ Hapus
+                                </button>
+                                <button type="button" onclick="this.closest('.fixed').remove()" 
+                                        class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                    Batal
+                                </button>
+                                <button type="submit" 
+                                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 lg:px-4 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                    Perbarui
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Focus on name input
+            setTimeout(() => {
+                document.getElementById('editPlayerName').focus();
+            }, 100);
+        }
+
+        function updatePlayer(event, playerIndex) {
+            event.preventDefault();
+            
+            const name = document.getElementById('editPlayerName').value.trim();
+            const score = parseInt(document.getElementById('editPlayerScore').value);
+            const paid = document.getElementById('editPlayerPaid').checked;
+            
+            if (!name) {
+                showStorageNotification('Nama pemain wajib diisi!', 'error');
+                return;
+            }
+            
+            // Check if another player has the same name
+            const existingPlayer = pesertaData.find((p, index) => 
+                index !== playerIndex && p.nama.toLowerCase() === name.toLowerCase()
+            );
+            if (existingPlayer) {
+                showStorageNotification('Pemain lain dengan nama ini sudah ada!', 'error');
+                return;
+            }
+            
+            // Update player
+            pesertaData[playerIndex] = {
+                nama: name,
+                bayar: paid,
+                skor: score
+            };
+            
+            // Auto-save
+            autoSaveTournamentData('manual');
+            
+            // Refresh UI
+            loadPeserta();
+            loadKeuangan();
+            updatePlayerStats();
+            
+            // Close modal
+            event.target.closest('.fixed').remove();
+            
+            showStorageNotification(`Pemain "${name}" berhasil diperbarui!`, 'success');
+        }
+
+        function deletePlayer(playerIndex) {
+            const player = pesertaData[playerIndex];
+            if (!player) return;
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus pemain "${player.nama}"?\n\nTindakan ini tidak dapat dibatalkan.`)) {
+                // Remove player
+                pesertaData.splice(playerIndex, 1);
+                
+                // Reset tournament if teams were generated
+                if (currentPairs.length > 0) {
+                    currentPairs = [];
+                    resetTournament();
+                    showStorageNotification('Tim dan turnamen direset karena penghapusan pemain.', 'warning');
+                }
+                
+                // Auto-save
+                autoSaveTournamentData('manual');
+                
+                // Refresh UI
+                loadPeserta();
+                loadKeuangan();
+                updatePlayerStats();
+                
+                showStorageNotification(`Pemain "${player.nama}" berhasil dihapus!`, 'success');
+            }
+        }
+
+        function updatePlayerStats() {
+            const totalPlayers = pesertaData.length;
+            const paidPlayers = pesertaData.filter(p => p.bayar).length;
+            const avgScore = totalPlayers > 0 ? Math.round(pesertaData.reduce((sum, p) => sum + p.skor, 0) / totalPlayers) : 0;
+            const topScore = totalPlayers > 0 ? Math.max(...pesertaData.map(p => p.skor)) : 0;
+            
+            // Update stats display
+            document.getElementById('totalPlayers').textContent = totalPlayers;
+            document.getElementById('paidPlayers').textContent = paidPlayers;
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('topScore').textContent = topScore;
+            
+            // Update header total
+            document.getElementById('totalPeserta').textContent = totalPlayers;
+        }
+
+        function filterPlayers() {
+            const searchTerm = document.getElementById('searchPlayer').value.toLowerCase();
+            const statusFilter = document.getElementById('filterStatus').value;
+            
+            let filteredPlayers = pesertaData;
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredPlayers = filteredPlayers.filter(player => 
+                    player.nama.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Apply status filter
+            if (statusFilter === 'paid') {
+                filteredPlayers = filteredPlayers.filter(player => player.bayar);
+            } else if (statusFilter === 'unpaid') {
+                filteredPlayers = filteredPlayers.filter(player => !player.bayar);
+            }
+            
+            renderFilteredPlayers(filteredPlayers);
+        }
+
+        function sortPlayers() {
+            const sortBy = document.getElementById('sortBy').value;
+            let sortedPlayers = [...pesertaData];
+            
+            switch (sortBy) {
+                case 'name':
+                    sortedPlayers.sort((a, b) => a.nama.localeCompare(b.nama));
+                    break;
+                case 'score':
+                    sortedPlayers.sort((a, b) => b.skor - a.skor);
+                    break;
+                case 'payment':
+                    sortedPlayers.sort((a, b) => b.bayar - a.bayar);
+                    break;
+            }
+            
+            renderFilteredPlayers(sortedPlayers);
+        }
+
+        function renderFilteredPlayers(playersToRender) {
+            const container = document.getElementById('daftarPeserta');
+            container.innerHTML = '';
+            
+            if (playersToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                        <p>No players found matching your criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            playersToRender.forEach((peserta, index) => {
+                // Find original index for edit/delete operations
+                const originalIndex = pesertaData.findIndex(p => p.nama === peserta.nama && p.skor === peserta.skor);
+                
+                const pesertaCard = document.createElement('div');
+                pesertaCard.className = 'flex flex-col lg:flex-row lg:items-center lg:justify-between responsive-padding rounded-xl border border-gray-100 hover:border-gray-200 transition-all card-hover bg-white space-y-3 lg:space-y-0';
+                pesertaCard.innerHTML = `
+                    <div class="flex items-center space-x-3 lg:space-x-4 flex-1">
+                        <div class="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl flex items-center justify-center font-bold responsive-text">
+                            ${peserta.nama.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-gray-900 responsive-text truncate">${peserta.nama}</h3>
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-4 mt-1 space-y-1 lg:space-y-0">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs lg:text-sm text-gray-500">Score:</span>
+                                    <span class="font-medium text-indigo-600 text-sm lg:text-base">${peserta.skor}</span>
+                                    <div class="w-12 lg:w-16 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-indigo-500 h-2 rounded-full" style="width: ${peserta.skor}%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs lg:text-sm ${peserta.bayar ? 'text-green-600' : 'text-red-600'}">
+                                    ${peserta.bayar ? '✅ Paid' : '❌ Unpaid'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between lg:justify-end lg:space-x-3">
+                        <button onclick="togglePembayaran('${peserta.nama}')" 
+                                class="flex-1 lg:flex-none px-3 py-2 lg:px-4 text-xs lg:text-sm font-medium rounded-lg transition-colors touch-target ${peserta.bayar ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}">
+                            ${peserta.bayar ? 'Belum Bayar' : 'Sudah Bayar'}
+                        </button>
+                        <button onclick="showEditPlayerModal(${originalIndex})" 
+                                class="w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-indigo-100 hover:text-indigo-600 rounded-lg transition-colors touch-target ml-2" title="Edit Pemain">
+                            <svg class="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(pesertaCard);
+            });
+        }
+
+        // ===== SISTEM PENYIMPANAN SEMENTARA CANGGIH =====
+        class AdvancedTempStorage {
+            constructor() {
+                this.storageKey = 'SIBAD_Tournament_Data';
+                this.defaultExpireDays = 5; // 5 hari default
+                this.compressionEnabled = true;
+                this.encryptionEnabled = false; // Bisa diaktifkan jika diperlukan
+                
+                // Initialize storage cleanup
+                this.cleanupExpiredData();
+            }
+
+            // Set data dengan expired time yang bisa dikustomisasi
+            setData(key, data, expireDays = this.defaultExpireDays) {
+                try {
+                    const now = new Date();
+                    const expireTime = new Date(now.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+                    
+                    const storageItem = {
+                        data: this.compressionEnabled ? this.compress(data) : data,
+                        timestamp: now.getTime(),
+                        expireTime: expireTime.getTime(),
+                        compressed: this.compressionEnabled,
+                        version: '1.0',
+                        dataType: this.getDataType(data)
+                    };
+
+                    const fullKey = `${this.storageKey}_${key}`;
+                    localStorage.setItem(fullKey, JSON.stringify(storageItem));
+                    
+                    console.log(`✅ Data '${key}' tersimpan hingga: ${expireTime.toLocaleString('id-ID')}`);
+                    return true;
+                } catch (error) {
+                    console.error('❌ Error menyimpan data:', error);
+                    return false;
+                }
+            }
+
+            // Get data dengan validasi expired
+            getData(key, defaultValue = null) {
+                try {
+                    const fullKey = `${this.storageKey}_${key}`;
+                    const stored = localStorage.getItem(fullKey);
+                    
+                    if (!stored) {
+                        return defaultValue;
+                    }
+
+                    const storageItem = JSON.parse(stored);
+                    const now = new Date().getTime();
+
+                    // Cek apakah data sudah expired
+                    if (now > storageItem.expireTime) {
+                        this.removeData(key);
+                        console.log(`⏰ Data '${key}' sudah expired dan dihapus`);
+                        return defaultValue;
+                    }
+
+                    // Decompress jika data dikompres
+                    const data = storageItem.compressed ? 
+                        this.decompress(storageItem.data) : 
+                        storageItem.data;
+
+                    return data;
+                } catch (error) {
+                    console.error('❌ Error membaca data:', error);
+                    return defaultValue;
+                }
+            }
+
+            // Update data yang sudah ada
+            updateData(key, newData, extendExpiry = false) {
+                const existing = this.getStorageInfo(key);
+                if (existing) {
+                    const expireDays = extendExpiry ? this.defaultExpireDays : 
+                        Math.ceil((existing.expireTime - new Date().getTime()) / (24 * 60 * 60 * 1000));
+                    return this.setData(key, newData, Math.max(1, expireDays));
+                }
+                return this.setData(key, newData);
+            }
+
+            // Hapus data tertentu
+            removeData(key) {
+                const fullKey = `${this.storageKey}_${key}`;
+                localStorage.removeItem(fullKey);
+                console.log(`🗑️ Data '${key}' telah dihapus`);
+            }
+
+            // Get info tentang data yang tersimpan
+            getStorageInfo(key) {
+                try {
+                    const fullKey = `${this.storageKey}_${key}`;
+                    const stored = localStorage.getItem(fullKey);
+                    
+                    if (!stored) return null;
+
+                    const storageItem = JSON.parse(stored);
+                    const now = new Date().getTime();
+                    const remainingTime = storageItem.expireTime - now;
+                    const remainingDays = Math.ceil(remainingTime / (24 * 60 * 60 * 1000));
+
+                    return {
+                        key: key,
+                        timestamp: new Date(storageItem.timestamp),
+                        expireTime: new Date(storageItem.expireTime),
+                        remainingDays: Math.max(0, remainingDays),
+                        size: this.getStorageSize(stored),
+                        dataType: storageItem.dataType,
+                        compressed: storageItem.compressed,
+                        isExpired: remainingTime <= 0
+                    };
+                } catch (error) {
+                    console.error('❌ Error mendapatkan info storage:', error);
+                    return null;
+                }
+            }
+
+            // List semua data yang tersimpan
+            listAllData() {
+                const allData = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(this.storageKey)) {
+                        const shortKey = key.replace(`${this.storageKey}_`, '');
+                        const info = this.getStorageInfo(shortKey);
+                        if (info) {
+                            allData.push(info);
+                        }
+                    }
+                }
+                return allData.sort((a, b) => b.timestamp - a.timestamp);
+            }
+
+            // Cleanup data yang expired
+            cleanupExpiredData() {
+                let cleanedCount = 0;
+                const allData = this.listAllData();
+                
+                allData.forEach(item => {
+                    if (item.isExpired) {
+                        this.removeData(item.key);
+                        cleanedCount++;
+                    }
+                });
+
+                if (cleanedCount > 0) {
+                    console.log(`🧹 Membersihkan ${cleanedCount} data expired`);
+                }
+            }
+
+            // Extend waktu expired untuk data tertentu
+            extendExpiry(key, additionalDays = 5) {
+                const data = this.getData(key);
+                if (data) {
+                    return this.setData(key, data, additionalDays);
+                }
+                return false;
+            }
+
+            // Backup semua data
+            backupAllData() {
+                const backup = {
+                    timestamp: new Date().getTime(),
+                    data: {}
+                };
+
+                this.listAllData().forEach(item => {
+                    if (!item.isExpired) {
+                        backup.data[item.key] = this.getData(item.key);
+                    }
+                });
+
+                return JSON.stringify(backup, null, 2);
+            }
+
+            // Restore dari backup
+            restoreFromBackup(backupString, extendExpiry = true) {
+                try {
+                    const backup = JSON.parse(backupString);
+                    let restoredCount = 0;
+
+                    Object.keys(backup.data).forEach(key => {
+                        this.setData(key, backup.data[key], extendExpiry ? this.defaultExpireDays : 1);
+                        restoredCount++;
+                    });
+
+                    console.log(`📁 Berhasil restore ${restoredCount} data`);
+                    return true;
+                } catch (error) {
+                    console.error('❌ Error restore backup:', error);
+                    return false;
+                }
+            }
+
+            // Clear semua data aplikasi
+            clearAllData() {
+                const keys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(this.storageKey)) {
+                        keys.push(key);
+                    }
+                }
+                
+                keys.forEach(key => localStorage.removeItem(key));
+                console.log(`🗑️ Menghapus semua data (${keys.length} item)`);
+            }
+
+            // Utility functions
+            compress(data) {
+                // Simple compression simulation (dalam implementasi nyata bisa gunakan LZ-string)
+                return btoa(JSON.stringify(data));
+            }
+
+            decompress(compressedData) {
+                try {
+                    return JSON.parse(atob(compressedData));
+                } catch (error) {
+                    console.error('❌ Error decompressing data:', error);
+                    return null;
+                }
+            }
+
+            getDataType(data) {
+                if (Array.isArray(data)) return 'array';
+                if (data === null) return 'null';
+                return typeof data;
+            }
+
+            getStorageSize(data) {
+                return new Blob([data]).size + ' bytes';
+            }
+
+            // Get storage statistics
+            getStorageStats() {
+                const allData = this.listAllData();
+                const totalSize = allData.reduce((total, item) => {
+                    const stored = localStorage.getItem(`${this.storageKey}_${item.key}`);
+                    return total + new Blob([stored || '']).size;
+                }, 0);
+
+                return {
+                    totalItems: allData.length,
+                    expiredItems: allData.filter(item => item.isExpired).length,
+                    validItems: allData.filter(item => !item.isExpired).length,
+                    totalSize: `${(totalSize / 1024).toFixed(2)} KB`,
+                    oldestData: allData.length > 0 ? allData[allData.length - 1].timestamp : null,
+                    newestData: allData.length > 0 ? allData[0].timestamp : null
+                };
+            }
+
+            // Display storage dashboard
+            showStorageDashboard() {
+                const stats = this.getStorageStats();
+                const allData = this.listAllData();
+
+                console.group('📊 SIBAD Storage Dashboard');
+                console.log('📈 Statistik:');
+                console.table(stats);
+                
+                if (allData.length > 0) {
+                    console.log('📋 Detail Data:');
+                    console.table(allData.map(item => ({
+                        Key: item.key,
+                        'Sisa Hari': item.remainingDays,
+                        'Tipe Data': item.dataType,
+                        'Ukuran': item.size,
+                        'Dikompres': item.compressed ? 'Ya' : 'Tidak',
+                        'Status': item.isExpired ? '❌ Expired' : '✅ Valid'
+                    })));
+                }
+                console.groupEnd();
+            }
+        }
+
+        // Initialize storage manager
+        const tempStorage = new AdvancedTempStorage();
+
+        // Notification system untuk storage
+        function showStorageNotification(message, type = 'info', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 max-w-sm p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+            
+            let bgColor, textColor, icon;
+            switch(type) {
+                case 'success':
+                    bgColor = 'bg-green-500';
+                    textColor = 'text-white';
+                    icon = '✅';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-500';
+                    textColor = 'text-white';
+                    icon = '⚠️';
+                    break;
+                case 'error':
+                    bgColor = 'bg-red-500';
+                    textColor = 'text-white';
+                    icon = '❌';
+                    break;
+                default:
+                    bgColor = 'bg-blue-500';
+                    textColor = 'text-white';
+                    icon = 'ℹ️';
+            }
+            
+            notification.className += ` ${bgColor} ${textColor}`;
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-lg">${icon}</span>
+                    <div class="flex-1">
+                        <p class="font-medium">${message}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:bg-black hover:bg-opacity-20 rounded p-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Slide in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        // Check storage warnings
+        function checkStorageWarnings() {
+            const info = tempStorage.getStorageInfo('peserta');
+            if (info) {
+                if (info.remainingDays <= 1 && info.remainingDays > 0) {
+                    showStorageNotification(
+                        `Data akan expired dalam ${info.remainingDays} hari. Backup sekarang!`, 
+                        'warning', 
+                        5000
+                    );
+                } else if (info.isExpired) {
+                    showStorageNotification(
+                        'Data sudah expired! Data default akan dimuat.', 
+                        'error', 
+                        5000
+                    );
+                }
+            }
+        }
+
+        // Fungsi untuk update status storage indicator
+        function updateStorageStatusIndicator() {
+            const statusEl = document.getElementById('storageStatus');
+            if (!statusEl) return;
+            
+            const info = tempStorage.getStorageInfo('peserta');
+            if (info && !info.isExpired) {
+                const days = info.remainingDays;
+                statusEl.textContent = `${days}d`;
+                
+                // Update color based on remaining days
+                if (days >= 4) {
+                    statusEl.className = 'px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full';
+                } else if (days >= 2) {
+                    statusEl.className = 'px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full';
+                } else {
+                    statusEl.className = 'px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full';
+                }
+            } else {
+                statusEl.textContent = 'No Data';
+                statusEl.className = 'px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full';
+            }
+        }
+
+        // Tournament bracket management functions
+        function initializeTournamentBracket() {
+            if (currentPairs.length < 2) return false;
+            
+            // Reset bracket
+            tournamentBracket = {
+                quarterFinals: [],
+                semiFinals: [],
+                final: null,
+                champion: null,
+                thirdPlace: null,
+                isGenerated: true,
+                currentRound: 'quarter'
+            };
+            
+            // Create quarter final matches
+            for (let i = 0; i < currentPairs.length; i += 2) {
+                if (i + 1 < currentPairs.length) {
+                    const match = {
+                        matchId: `QF${Math.floor(i/2) + 1}`,
+                        team1: {
+                            id: i,
+                            data: currentPairs[i],
+                            score: currentPairs[i].reduce((sum, p) => sum + p.skor, 0),
+                            name: `Team ${i + 1}`
+                        },
+                        team2: {
+                            id: i + 1,
+                            data: currentPairs[i + 1],
+                            score: currentPairs[i + 1].reduce((sum, p) => sum + p.skor, 0),
+                            name: `Team ${i + 2}`
+                        },
+                        winner: null,
+                        status: 'pending', // pending, completed
+                        round: 'quarter'
+                    };
+                    tournamentBracket.quarterFinals.push(match);
+                } else {
+                    // Bye - team advances automatically
+                    const match = {
+                        matchId: `QF${Math.floor(i/2) + 1}`,
+                        team1: {
+                            id: i,
+                            data: currentPairs[i],
+                            score: currentPairs[i].reduce((sum, p) => sum + p.skor, 0),
+                            name: `Team ${i + 1}`
+                        },
+                        team2: null,
+                        winner: 'team1',
+                        status: 'bye',
+                        round: 'quarter'
+                    };
+                    tournamentBracket.quarterFinals.push(match);
+                }
+            }
+            
+            // Initialize semifinals structure
+            const numSemiMatches = Math.ceil(tournamentBracket.quarterFinals.length / 2);
+            for (let i = 0; i < numSemiMatches; i++) {
+                tournamentBracket.semiFinals.push({
+                    matchId: `SF${i + 1}`,
+                    team1: null,
+                    team2: null,
+                    winner: null,
+                    status: 'waiting',
+                    round: 'semi'
+                });
+            }
+            
+            // Initialize final
+            if (tournamentBracket.semiFinals.length > 0) {
+                tournamentBracket.final = {
+                    matchId: 'FINAL',
+                    team1: null,
+                    team2: null,
+                    winner: null,
+                    status: 'waiting',
+                    round: 'final'
+                };
+            }
+            
+            return true;
+        }
+
+        function setMatchWinner(matchId, winnerTeam) {
+            const match = findMatchById(matchId);
+            if (!match || match.status === 'completed') return false;
+            
+            match.winner = winnerTeam;
+            match.status = 'completed';
+            
+            // Auto-save tournament data
+            autoSaveTournamentData();
+            
+            // Advance winner to next round
+            advanceWinner(match);
+            
+            // Check if round is complete
+            checkRoundCompletion();
+            
+            // Show notification
+            const winnerData = winnerTeam === 'team1' ? match.team1 : match.team2;
+            showStorageNotification(`🏆 ${winnerData.name} menang di ${match.matchId}!`, 'success');
+            
+            // Re-render bracket to show updates
+            renderTournamentBracket();
+            
+            return true;
+        }
+
+        function findMatchById(matchId) {
+            // Search in all rounds
+            let match = tournamentBracket.quarterFinals.find(m => m.matchId === matchId);
+            if (match) return match;
+            
+            match = tournamentBracket.semiFinals.find(m => m.matchId === matchId);
+            if (match) return match;
+            
+            if (tournamentBracket.final && tournamentBracket.final.matchId === matchId) {
+                return tournamentBracket.final;
+            }
+            
+            // Search in third place match
+            if (tournamentBracket.thirdPlace && tournamentBracket.thirdPlace.matchId === matchId) {
+                return tournamentBracket.thirdPlace;
+            }
+            
+            return null;
+        }
+
+        function advanceWinner(match) {
+            const winner = match.winner === 'team1' ? match.team1 : match.team2;
+            
+            if (match.round === 'quarter') {
+                // Advance to semifinals
+                const qfIndex = tournamentBracket.quarterFinals.indexOf(match);
+                const sfIndex = Math.floor(qfIndex / 2);
+                const sfMatch = tournamentBracket.semiFinals[sfIndex];
+                
+                if (sfMatch) {
+                    if (qfIndex % 2 === 0) {
+                        sfMatch.team1 = winner;
+                    } else {
+                        sfMatch.team2 = winner;
+                    }
+                    
+                    // Check if semifinal is ready
+                    if (sfMatch.team1 && sfMatch.team2) {
+                        sfMatch.status = 'pending';
+                    }
+                }
+            } else if (match.round === 'semi') {
+                // Advance to final
+                const sfIndex = tournamentBracket.semiFinals.indexOf(match);
+                
+                if (tournamentBracket.final) {
+                    if (sfIndex === 0) {
+                        tournamentBracket.final.team1 = winner;
+                    } else {
+                        tournamentBracket.final.team2 = winner;
+                    }
+                    
+                    // Check if final is ready
+                    if (tournamentBracket.final.team1 && tournamentBracket.final.team2) {
+                        tournamentBracket.final.status = 'pending';
+                    }
+                }
+            } else if (match.round === 'final') {
+                // Set champion
+                tournamentBracket.champion = winner;
+                tournamentBracket.currentRound = 'complete';
+                console.log('🏆 Champion set:', winner.name);
+            } else if (match.round === 'third') {
+                // Set third place winner
+                tournamentBracket.thirdPlaceWinner = winner;
+                console.log('🥉 Third place winner set:', winner.name);
+            }
+        }
+
+        function getSemifinalLosers() {
+            const losers = [];
+            tournamentBracket.semiFinals.forEach(match => {
+                if (match.status === 'completed') {
+                    const loser = match.winner === 'team1' ? match.team2 : match.team1;
+                    losers.push(loser);
+                }
+            });
+            return losers;
+        }
+
+        function checkRoundCompletion() {
+            if (tournamentBracket.currentRound === 'quarter') {
+                const allCompleted = tournamentBracket.quarterFinals.every(m => 
+                    m.status === 'completed' || m.status === 'bye'
+                );
+                if (allCompleted) {
+                    tournamentBracket.currentRound = 'semi';
+                    showStorageNotification('🎯 Quarterfinals selesai! Semifinals siap dimulai.', 'info');
+                }
+            } else if (tournamentBracket.currentRound === 'semi') {
+                const allCompleted = tournamentBracket.semiFinals.every(m => 
+                    m.status === 'completed' || m.status === 'bye'
+                );
+                if (allCompleted) {
+                    tournamentBracket.currentRound = 'final';
+                    
+                    // Create third place match when semifinals are complete
+                    createThirdPlaceMatch();
+                    
+                    showStorageNotification('🔥 Semifinals selesai! Final dan Third Place siap dimulai.', 'info');
+                }
+            }
+        }
+
+        function createThirdPlaceMatch() {
+            const sfLosers = getSemifinalLosers();
+            console.log('🥉 Creating third place match with losers:', sfLosers);
+            
+            if (sfLosers.length >= 2) {
+                tournamentBracket.thirdPlace = {
+                    matchId: 'THIRD',
+                    team1: sfLosers[0],
+                    team2: sfLosers[1],
+                    winner: null,
+                    status: 'pending',
+                    round: 'third'
+                };
+                console.log('✅ Third place match created:', tournamentBracket.thirdPlace);
+            } else if (sfLosers.length === 1) {
+                // Only one team - automatic third place
+                tournamentBracket.thirdPlace = {
+                    matchId: 'THIRD',
+                    team1: sfLosers[0],
+                    team2: null,
+                    winner: 'team1',
+                    status: 'bye',
+                    round: 'third'
+                };
+                tournamentBracket.thirdPlaceWinner = sfLosers[0];
+                console.log('✅ Third place automatic winner:', sfLosers[0].name);
+            }
+        }
+
+        // Auto save functions untuk data turnamen
+        function autoSaveTournamentData() {
+            // Save peserta data
+            tempStorage.setData('peserta', pesertaData, 5);
+            
+            // Save pengeluaran data
+            tempStorage.setData('pengeluaran', pengeluaranData, 5);
+            
+            // Save custom expenses data
+            tempStorage.setData('customExpenses', customExpenses, 5);
+            
+            // Save current pairs jika ada
+            if (currentPairs.length > 0) {
+                tempStorage.setData('currentPairs', currentPairs, 5);
+            }
+            
+            // Save tournament bracket data
+            if (tournamentBracket.isGenerated) {
+                tempStorage.setData('tournamentBracket', tournamentBracket, 5);
+            }
+            
+            // Save timestamp terakhir update
+            tempStorage.setData('lastUpdate', new Date().toISOString(), 5);
+            
+            // Update storage status indicator
+            updateStorageStatusIndicator();
+            
+            // Show save notification (hanya jika bukan auto-save)
+            if (arguments.length > 0 && arguments[0] === 'manual') {
+                showStorageNotification('Data berhasil disimpan untuk 5 hari!', 'success');
+            }
+        }
+
+        // Auto load functions untuk data turnamen
+        function autoLoadTournamentData() {
+            // Load peserta data
+            const savedPeserta = tempStorage.getData('peserta');
+            if (savedPeserta && Array.isArray(savedPeserta)) {
+                pesertaData.splice(0, pesertaData.length, ...savedPeserta);
+                console.log('✅ Data peserta dimuat dari storage');
+            }
+            
+            // Load pengeluaran data
+            const savedPengeluaran = tempStorage.getData('pengeluaran');
+            if (savedPengeluaran && Array.isArray(savedPengeluaran)) {
+                pengeluaranData.splice(0, pengeluaranData.length, ...savedPengeluaran);
+                console.log('✅ Data pengeluaran dimuat dari storage');
+            }
+            
+            // Load custom expenses data
+            const savedCustomExpenses = tempStorage.getData('customExpenses');
+            if (savedCustomExpenses && Array.isArray(savedCustomExpenses)) {
+                customExpenses.splice(0, customExpenses.length, ...savedCustomExpenses);
+                // Update counter to avoid ID conflicts
+                if (customExpenses.length > 0) {
+                    expenseIdCounter = Math.max(...customExpenses.map(e => e.id)) + 1;
+                }
+                console.log('✅ Data pengeluaran kustom dimuat dari storage');
+            }
+            
+            // Load current pairs
+            const savedPairs = tempStorage.getData('currentPairs');
+            if (savedPairs && Array.isArray(savedPairs)) {
+                currentPairs = savedPairs;
+                console.log('✅ Data pasangan dimuat dari storage');
+            }
+            
+            // Load tournament bracket
+            const savedBracket = tempStorage.getData('tournamentBracket');
+            if (savedBracket && savedBracket.isGenerated) {
+                tournamentBracket = savedBracket;
+                console.log('✅ Data bracket tournament dimuat dari storage');
+            }
+        }
+
+        // Fungsi untuk export data dengan format yang user-friendly
+        function exportTournamentData() {
+            const exportData = {
+                metadata: {
+                    exportDate: new Date().toISOString(),
+                    tournamentName: 'Badminton Tournament',
+                    totalPlayers: pesertaData.length,
+                    version: '1.0'
+                },
+                peserta: pesertaData,
+                pengeluaran: pengeluaranData,
+                currentPairs: currentPairs,
+                storageInfo: tempStorage.getStorageStats()
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `SIBAD_Tournament_${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            console.log('📁 Data turnamen berhasil diekspor');
+        }
+
+        // Storage management panel untuk admin
+        function showStoragePanel() {
+            // Panel storage disembunyikan untuk user
+            return;
+        }
+
+        // Data peserta dengan skor kekuatan
+        let pesertaData = [
+            { nama: "Hermanto", bayar: false, skor: 95 },
+            { nama: "Praja Habib Pasangka", bayar: false, skor: 95 },
+            { nama: "Muhammad Irvan", bayar: false, skor: 90 },
+            { nama: "Muhammad Sukri", bayar: false, skor: 90 },
+            { nama: "Eko Setya Wahyudi", bayar: false, skor: 85 },
+            { nama: "Ajis", bayar: false, skor: 80 },
+            { nama: "Hamada Zein", bayar: false, skor: 75 },
+            { nama: "Mohamad Dziqie Aulia Al Farauqi", bayar: true, skor: 75 },
+            { nama: "Nardi", bayar: false, skor: 70 },
+            { nama: "Faqih", bayar: false, skor: 70 },
+            { nama: "Budiman", bayar: false, skor: 70 },
+            { nama: "Praja Hadi Saputra", bayar: false, skor: 65 },
+            { nama: "Asrul hadi", bayar: false, skor: 64 },
+            { nama: "Ichsan Noor Fahmi", bayar: false, skor: 60 },
+            { nama: "Galih Priyambada", bayar: false, skor: 60 },
+            { nama: "Idham Cholid", bayar: false, skor: 50 }
+        ];
+
+        let currentPairs = [];
+        
+        // Custom Expenses Data
+        let customExpenses = [
+            // Data pengeluaran custom akan ditambahkan melalui interface
+        ];
+        let expenseIdCounter = 1; // ID counter for new expenses
+        
+        // Tournament bracket data structure
+        let tournamentBracket = {
+            quarterFinals: [], // Array of matches: [{team1, team2, winner, matchId, status}]
+            semiFinals: [],
+            final: null,
+            champion: null,
+            thirdPlace: null,
+            isGenerated: false,
+            currentRound: 'quarter' // quarter, semi, final, complete
+        };
+
+        // Data pengeluaran turnamen
+        const pengeluaranData = [
+            { item: "Shuttle Cock", jumlah: 3, harga: 130000, total: 390000, icon: "🏸" },
+            { item: "Air Mineral", jumlah: 1, harga: 100000, total: 100000, icon: "💧" },
+            { item: "Hadiah Juara 1", jumlah: 1, harga: 200000, total: 200000, icon: "🏆" },
+            { item: "Hadiah Juara 2", jumlah: 1, harga: 70000, total: 70000, icon: "🥈" },
+            { item: "Hadiah Juara 3", jumlah: 1, harga: 40000, total: 40000, icon: "🥉" }
+        ];
+
+        // Fungsi untuk menampilkan tab
+        function showTab(tabName) {
+            // Sembunyikan semua konten
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Reset semua tab button dengan animasi smooth
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'text-indigo-600', 'active');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Tampilkan konten yang dipilih
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            // Aktifkan tab button dengan efek
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-indigo-500', 'text-indigo-600', 'active');
+            
+            // Add subtle animation feedback
+            activeTab.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                activeTab.style.transform = '';
+            }, 150);
+        }
+
+        // Fungsi untuk memuat daftar peserta
+        function loadPeserta() {
+            // Use the new render function
+            renderFilteredPlayers(pesertaData);
+            
+            // Update player statistics
+            updatePlayerStats();
+        }
+
+        // Fungsi untuk membuat pasangan berimbang
+        function createBalancedPairs() {
+            // Pisahkan pemain berdasarkan kategori kekuatan
+            const strongPlayers = pesertaData.filter(p => p.skor > 75);
+            const mediumPlayers = pesertaData.filter(p => p.skor >= 65 && p.skor <= 75);
+            const weakPlayers = pesertaData.filter(p => p.skor < 65);
+            
+            const pairs = [];
+            
+            // Acak setiap kategori
+            const shuffledStrong = [...strongPlayers].sort(() => Math.random() - 0.5);
+            const shuffledMedium = [...mediumPlayers].sort(() => Math.random() - 0.5);
+            const shuffledWeak = [...weakPlayers].sort(() => Math.random() - 0.5);
+            
+            // Pasangkan pemain kuat dengan pemain lemah/menengah
+            let mediumIndex = 0;
+            let weakIndex = 0;
+            
+            for (let i = 0; i < shuffledStrong.length; i++) {
+                const strongPlayer = shuffledStrong[i];
+                let partner;
+                
+                if (weakIndex < shuffledWeak.length) {
+                    partner = shuffledWeak[weakIndex];
+                    weakIndex++;
+                } else if (mediumIndex < shuffledMedium.length) {
+                    partner = shuffledMedium[mediumIndex];
+                    mediumIndex++;
+                }
+                
+                if (partner) {
+                    pairs.push([strongPlayer, partner]);
+                }
+            }
+            
+            // Pasangkan sisa pemain menengah
+            for (let i = mediumIndex; i < shuffledMedium.length; i += 2) {
+                if (i + 1 < shuffledMedium.length) {
+                    pairs.push([shuffledMedium[i], shuffledMedium[i + 1]]);
+                } else {
+                    if (weakIndex < shuffledWeak.length) {
+                        pairs.push([shuffledMedium[i], shuffledWeak[weakIndex]]);
+                        weakIndex++;
+                    } else {
+                        if (pairs.length > 0) {
+                            pairs[pairs.length - 1].push(shuffledMedium[i]);
+                        }
+                    }
+                }
+            }
+            
+            // Pasangkan sisa pemain lemah
+            for (let i = weakIndex; i < shuffledWeak.length; i += 2) {
+                if (i + 1 < shuffledWeak.length) {
+                    pairs.push([shuffledWeak[i], shuffledWeak[i + 1]]);
+                } else {
+                    if (pairs.length > 0) {
+                        pairs[pairs.length - 1].push(shuffledWeak[i]);
+                    }
+                }
+            }
+            
+            return pairs;
+        }
+
+        // Fungsi untuk spin pasangan
+        function spinPasangan() {
+            const spinWheel = document.getElementById('spinWheel');
+            const spinBtn = document.getElementById('spinBtn');
+            const hasilSpin = document.getElementById('hasilSpin');
+            
+            // Animasi spin
+            spinWheel.classList.add('spin-animation');
+            spinBtn.disabled = true;
+            spinBtn.textContent = 'Membuat...';
+            
+            setTimeout(() => {
+                spinWheel.classList.remove('spin-animation');
+                spinBtn.disabled = false;
+                spinBtn.textContent = 'Buat Ulang Tim';
+                
+                // Buat pasangan berimbang
+                currentPairs = createBalancedPairs();
+                
+                // Auto-save setelah membuat pasangan
+                autoSaveTournamentData();
+                
+                // Tampilkan hasil
+                hasilSpin.innerHTML = '';
+                currentPairs.forEach((pair, index) => {
+                    const totalSkor = pair.reduce((sum, p) => sum + p.skor, 0);
+                    
+                    const pairCard = document.createElement('div');
+                    pairCard.className = 'bg-gray-50 rounded-2xl p-6 card-hover';
+                    pairCard.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-900 text-white rounded-lg flex items-center justify-center font-bold text-sm">
+                                    ${index + 1}
+                                </div>
+                                <h3 class="font-semibold text-gray-900">Team ${index + 1}</h3>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500">Total</div>
+                                <div class="font-bold text-gray-900">${totalSkor}</div>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            ${pair.map(peserta => `
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                        <span class="text-gray-700">${peserta.nama}</span>
+                                        ${peserta.bayar ? '<div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>' : '<div class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></div>'}
+                                    </div>
+                                    <span class="text-sm font-medium text-gray-600">${peserta.skor}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    hasilSpin.appendChild(pairCard);
+                });
+            }, 2000);
+        }
+
+        // Fungsi untuk memuat data keuangan
+        function loadKeuangan() {
+            const tabel = document.getElementById('tabelKeuangan');
+            const totalTerkumpul = document.getElementById('totalTerkumpul');
+            const totalBelumBayar = document.getElementById('totalBelumBayar');
+            
+            loadPengeluaran();
+            
+            tabel.innerHTML = '';
+            let terkumpul = 0;
+            let belumBayar = 0;
+            const iuranPerOrang = 50000;
+            
+            pesertaData.forEach(peserta => {
+                if (peserta.bayar) {
+                    terkumpul += iuranPerOrang;
+                } else {
+                    belumBayar += iuranPerOrang;
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">${peserta.nama}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">Rp ${iuranPerOrang.toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4">
+                        ${peserta.bayar ? 
+                            '<div class="flex items-center space-x-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm text-green-600 font-medium">Lunas</span></div>' :
+                            '<div class="flex items-center space-x-2"><div class="w-2 h-2 bg-yellow-500 rounded-full"></div><span class="text-sm text-yellow-600 font-medium">Belum Bayar</span></div>'
+                        }
+                    </td>
+                    <td class="px-6 py-4">
+                        <button onclick="togglePembayaran('${peserta.nama}')" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                            ${peserta.bayar ? 'Batalkan' : 'Tandai Lunas'}
+                        </button>
+                    </td>
+                `;
+                tabel.appendChild(row);
+            });
+            
+            totalTerkumpul.textContent = `Rp ${terkumpul.toLocaleString('id-ID')}`;
+            totalBelumBayar.textContent = `Rp ${belumBayar.toLocaleString('id-ID')}`;
+            
+            updateRingkasanKeuangan(terkumpul);
+        }
+
+        // Fungsi untuk memuat pengeluaran
+        function loadPengeluaran() {
+            const container = document.getElementById('daftarPengeluaran');
+            
+            container.innerHTML = '';
+            
+            // Load pengeluaran lama (format lama)
+            pengeluaranData.forEach((item, index) => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100';
+                itemEl.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="text-lg">${item.icon}</span>
+                        <div>
+                            <div class="font-medium text-gray-900">${item.item}</div>
+                            <div class="text-sm text-gray-500">${item.jumlah} × Rp ${item.harga.toLocaleString('id-ID')}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold text-gray-900">Rp ${item.total.toLocaleString('id-ID')}</span>
+                        <button onclick="editOldExpense(${index})" class="text-blue-600 hover:text-blue-800 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                            </svg>
+                        </button>
+                        <button onclick="deleteOldExpense(${index})" class="text-red-600 hover:text-red-800 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h4a1 1 0 100-2H7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+            
+            // Load custom expenses (format baru)
+            customExpenses.forEach(expense => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100';
+                itemEl.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="text-lg">${getCategoryIcon(expense.kategori)}</span>
+                        <div>
+                            <div class="font-medium text-gray-900">${expense.nama}</div>
+                            <div class="text-sm text-gray-500">${expense.kategori} • ${expense.tanggal}</div>
+                            ${expense.keterangan ? `<div class="text-xs text-gray-400">${expense.keterangan}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold text-gray-900">Rp ${expense.jumlah.toLocaleString('id-ID')}</span>
+                        <button onclick="editExpense(${expense.id})" class="text-blue-600 hover:text-blue-800 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                            </svg>
+                        </button>
+                        <button onclick="deleteExpense(${expense.id})" class="text-red-600 hover:text-red-800 text-sm">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h4a1 1 0 100-2H7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+        }
+
+        // Fungsi untuk mendapatkan icon berdasarkan kategori
+        function getCategoryIcon(kategori) {
+            const icons = {
+                'Peralatan': '🏸',
+                'Hadiah': '🏆',
+                'Konsumsi': '🍔',
+                'Transport': '🚗',
+                'Sewa Tempat': '🏢',
+                'Lain-lain': '📦',
+                'Operasional': '⚙️',
+                'Dokumentasi': '📸'
+            };
+            return icons[kategori] || '📦';
+        }
+
+        // Fungsi untuk update ringkasan keuangan
+        function updateRingkasanKeuangan(pemasukan) {
+            const totalPengeluaranLama = pengeluaranData.reduce((sum, item) => sum + item.total, 0);
+            const totalPengeluaranBaru = customExpenses.reduce((sum, expense) => sum + expense.jumlah, 0);
+            const totalPengeluaran = totalPengeluaranLama + totalPengeluaranBaru;
+            const saldo = pemasukan - totalPengeluaran;
+            
+            document.getElementById('ringkasanPemasukan').textContent = `Rp ${pemasukan.toLocaleString('id-ID')}`;
+            document.getElementById('ringkasanPengeluaran').textContent = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
+            
+            const saldoEl = document.getElementById('saldoAkhir');
+            saldoEl.textContent = `Rp ${saldo.toLocaleString('id-ID')}`;
+            
+            if (saldo >= 0) {
+                saldoEl.className = 'font-bold text-green-600';
+            } else {
+                saldoEl.className = 'font-bold text-red-600';
+            }
+            
+            // Update juga total di bagian daftar pengeluaran
+            const totalPengeluaranEl = document.getElementById('totalPengeluaran');
+            if (totalPengeluaranEl) {
+                totalPengeluaranEl.textContent = `Rp ${totalPengeluaran.toLocaleString('id-ID')}`;
+            }
+        }
+
+        // Fungsi untuk toggle pembayaran
+        function togglePembayaran(nama) {
+            const peserta = pesertaData.find(p => p.nama === nama);
+            if (peserta) {
+                peserta.bayar = !peserta.bayar;
+                // Auto-save setelah perubahan
+                autoSaveTournamentData();
+                loadKeuangan();
+                loadPeserta();
+            }
+        }
+
+        function createTestTeams() {
+            // Create test teams if no teams exist
+            if (currentPairs.length === 0) {
+                // Use existing pesertaData to create 4 teams for testing
+                const testPairs = [];
+                
+                // Create teams of 2 players each
+                for (let i = 0; i < pesertaData.length && testPairs.length < 4; i += 4) {
+                    // Team 1: first 2 players
+                    if (i + 1 < pesertaData.length) {
+                        testPairs.push([pesertaData[i], pesertaData[i + 1]]);
+                    }
+                    
+                    // Team 2: next 2 players  
+                    if (i + 3 < pesertaData.length) {
+                        testPairs.push([pesertaData[i + 2], pesertaData[i + 3]]);
+                    }
+                }
+                
+                currentPairs = testPairs;
+                autoSaveTournamentData();
+                
+                showStorageNotification(`🧪 Created ${testPairs.length} test teams for bracket testing!`, 'success');
+                console.log('🧪 Test teams created:', currentPairs);
+            } else {
+                showStorageNotification(`Already have ${currentPairs.length} teams!`, 'info');
+            }
+        }
+
+        function debugBracket() {
+            console.group('🔍 BRACKET DEBUG INFO');
+            console.log('📊 Current Pairs:', currentPairs);
+            console.log('📊 Current Pairs Length:', currentPairs.length);
+            console.log('🏆 Tournament Bracket:', tournamentBracket);
+            console.log('🎯 Tournament Bracket Generated:', tournamentBracket.isGenerated);
+            
+            // Show debug modal
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onclick="this.remove()">
+                    <div class="bg-white rounded-2xl p-8 max-w-4xl w-full m-4 max-h-96 overflow-y-auto" onclick="event.stopPropagation()">
+                        <h3 class="text-2xl font-bold mb-6">🔍 Debug Information</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-bold mb-3">📊 Teams Data</h4>
+                                <p><strong>Total Teams:</strong> ${currentPairs.length}</p>
+                                <p><strong>Teams Generated:</strong> ${currentPairs.length > 0 ? 'Yes' : 'No'}</p>
+                                <div class="mt-2 text-sm">
+                                    ${currentPairs.length > 0 ? 
+                                        currentPairs.map((team, i) => 
+                                            `<div>Team ${i+1}: ${team.map(p => p.nama).join(', ')}</div>`
+                                        ).join('') 
+                                        : '<div class="text-red-500">No teams found. Please generate teams first in Teams tab.</div>'
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-bold mb-3">🏆 Tournament Status</h4>
+                                <p><strong>Bracket Generated:</strong> ${tournamentBracket.isGenerated ? 'Yes' : 'No'}</p>
+                                <p><strong>Current Round:</strong> ${tournamentBracket.currentRound}</p>
+                                <p><strong>Quarter Finals:</strong> ${tournamentBracket.quarterFinals ? tournamentBracket.quarterFinals.length : 0} matches</p>
+                                <p><strong>Semi Finals:</strong> ${tournamentBracket.semiFinals ? tournamentBracket.semiFinals.length : 0} matches</p>
+                                <p><strong>Final:</strong> ${tournamentBracket.final ? 'Initialized' : 'Not initialized'}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex gap-4">
+                            <button onclick="currentPairs = []; this.parentElement.parentElement.parentElement.remove(); showStorageNotification('Teams cleared for testing', 'info');" class="bg-red-500 text-white px-4 py-2 rounded-lg">
+                                🗑️ Clear Teams
+                            </button>
+                            <button onclick="if(currentPairs.length > 0) { generateBagan(); this.parentElement.parentElement.parentElement.remove(); }" class="bg-green-500 text-white px-4 py-2 rounded-lg">
+                                🔄 Regenerate Bracket
+                            </button>
+                            <button onclick="this.parentElement.parentElement.parentElement.remove()" class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            console.groupEnd();
+        }
+
+        // Fungsi untuk generate bagan turnamen
+        function generateBagan() {
+            console.log('🎯 generateBagan() dipanggil');
+            console.log('📊 currentPairs:', currentPairs);
+            console.log('🏆 tournamentBracket:', tournamentBracket);
+            
+            const container = document.getElementById('baganTurnamen');
+            console.log('📦 Container element:', container);
+            
+            if (currentPairs.length === 0) {
+                console.log('❌ Tidak ada tim, menampilkan pesan kosong');
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 mb-6">Buat tim terlebih dahulu untuk membuat bagan turnamen</p>
+                        <button onclick="showTab('spin')" class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-xl font-medium">
+                            Ke Tab Tim
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            console.log('✅ Memiliki tim, melanjutkan ke inisialisasi bracket');
+            
+            // Initialize bracket if not already done
+            if (!tournamentBracket.isGenerated) {
+                console.log('🔄 Inisialisasi tournament bracket');
+                const success = initializeTournamentBracket();
+                console.log('📋 Hasil inisialisasi:', success);
+                if (success) {
+                    autoSaveTournamentData();
+                    console.log('💾 Data tersimpan setelah inisialisasi');
+                }
+            }
+            
+            console.log('🎨 Rendering tournament bracket');
+            renderTournamentBracket();
+            console.log('✅ generateBagan() selesai');
+        }
+
+        function renderTournamentBracket() {
+            console.log('🎨 renderTournamentBracket() dipanggil');
+            const container = document.getElementById('baganTurnamen');
+            console.log('📦 Container untuk render:', container);
+            
+            if (!container) {
+                console.error('❌ Container baganTurnamen tidak ditemukan!');
+                return;
+            }
+            
+            console.log('🏗️ Membuat HTML bracket...');
+            
+            container.innerHTML = `
+                <div class="space-y-12">
+                    <!-- Tournament Status -->
+                    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-2xl p-8">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Tournament Progress</h3>
+                                <p class="text-gray-600 mt-1">Current Round: <span class="font-semibold text-indigo-600">${getRoundDisplayName(tournamentBracket.currentRound)}</span></p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-gray-900">${currentPairs.length}</div>
+                                <div class="text-sm text-gray-500">Teams</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mt-6">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Progress</span>
+                                <span>${getProgressPercentage()}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-indigo-500 h-3 rounded-full transition-all duration-500" style="width: ${getProgressPercentage()}%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="mt-6 flex gap-4">
+                            <button onclick="resetTournament()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                                🔄 Reset Tournament
+                            </button>
+                            ${tournamentBracket.champion ? `
+                                <button onclick="showChampionCelebration()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                                    🏆 View Champion
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    ${renderQuarterFinals()}
+                    ${renderSemiFinals()}
+                    ${renderFinal()}
+                    ${renderThirdPlace()}
+                </div>
+            `;
+            
+            console.log('✅ HTML bracket berhasil di-render');
+        }
+
+        function renderQuarterFinals() {
+            try {
+                if (!tournamentBracket.quarterFinals || tournamentBracket.quarterFinals.length === 0) {
+                    console.log('⚠️ Tidak ada quarterfinals untuk di-render');
+                    return '';
+                }
+                
+                console.log('🎯 Rendering quarterfinals:', tournamentBracket.quarterFinals.length, 'matches');
+                
+                return `
+                    <div>
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-indigo-500 text-white rounded-xl flex items-center justify-center font-bold">1</div>
+                                <h3 class="text-2xl font-bold text-gray-900">Quarterfinals</h3>
+                            </div>
+                            <div class="text-sm text-gray-500">${tournamentBracket.quarterFinals.length} matches</div>
+                        </div>
+                        
+                        <div class="grid gap-6">
+                            ${tournamentBracket.quarterFinals.map(match => renderMatch(match)).join('')}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering quarterfinals:', error);
+                return '<div class="text-red-500 p-4">Error loading quarterfinals</div>';
+            }
+        }
+
+        function renderSemiFinals() {
+            try {
+                if (!tournamentBracket.semiFinals || tournamentBracket.semiFinals.length === 0) {
+                    console.log('⚠️ Tidak ada semifinals untuk di-render');
+                    return '';
+                }
+                
+                console.log('🎯 Rendering semifinals:', tournamentBracket.semiFinals.length, 'matches');
+                
+                return `
+                    <div>
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-orange-500 text-white rounded-xl flex items-center justify-center font-bold">2</div>
+                                <h3 class="text-2xl font-bold text-gray-900">Semifinals</h3>
+                            </div>
+                            <div class="text-sm text-gray-500">${tournamentBracket.semiFinals.length} matches</div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-${Math.min(2, tournamentBracket.semiFinals.length)} gap-8">
+                            ${tournamentBracket.semiFinals.map(match => renderMatch(match)).join('')}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering semifinals:', error);
+                return '<div class="text-red-500 p-4">Error loading semifinals</div>';
+            }
+        }
+
+        function renderFinal() {
+            try {
+                if (!tournamentBracket.final) {
+                    console.log('⚠️ Tidak ada final untuk di-render');
+                    return '';
+                }
+                
+                console.log('🎯 Rendering final');
+                
+                return `
+                    <div>
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-yellow-500 text-white rounded-xl flex items-center justify-center font-bold">3</div>
+                                <h3 class="text-2xl font-bold text-gray-900">Final</h3>
+                            </div>
+                            <div class="text-sm text-gray-500">Championship Match</div>
+                        </div>
+                        
+                        <div class="max-w-3xl mx-auto">
+                            ${renderMatch(tournamentBracket.final, true)}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering final:', error);
+                return '<div class="text-red-500 p-4">Error loading final</div>';
+            }
+        }
+
+        function renderThirdPlace() {
+            try {
+                if (!tournamentBracket.thirdPlace) {
+                    console.log('⚠️ Tidak ada third place untuk di-render');
+                    return '';
+                }
+                
+                console.log('🎯 Rendering third place');
+                
+                return `
+                    <div>
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-orange-600 text-white rounded-xl flex items-center justify-center font-bold">🥉</div>
+                                <h3 class="text-2xl font-bold text-gray-900">Third Place</h3>
+                            </div>
+                            <div class="text-sm text-gray-500">Bronze Medal Match</div>
+                        </div>
+                        
+                        <div class="max-w-2xl mx-auto">
+                            ${renderMatch(tournamentBracket.thirdPlace)}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering third place:', error);
+                return '<div class="text-red-500 p-4">Error loading third place</div>';
+            }
+        }
+
+        function renderMatch(match, isFinal = false) {
+            try {
+                if (!match) {
+                    console.log('⚠️ Match object is null atau undefined');
+                    return '<div class="text-gray-500 p-4">No match data</div>';
+                }
+                
+                console.log('🎮 Rendering match:', match.matchId, 'Status:', match.status);
+                
+                const isByeMatch = !match.team2;
+                const isWaiting = match.status === 'waiting';
+                const isCompleted = match.status === 'completed' || match.status === 'bye';
+                const isPending = match.status === 'pending';
+                
+                if (isByeMatch) {
+                    return `
+                        <div class="bg-green-50 rounded-2xl p-8 text-center border-2 border-green-200">
+                            <div class="w-16 h-16 bg-green-500 text-white rounded-2xl flex items-center justify-center font-bold text-xl mx-auto mb-4">
+                                ✓
+                            </div>
+                            <h4 class="font-bold text-xl text-gray-900 mb-4">${match.team1.name} - Auto Advance</h4>
+                            <div class="bg-white rounded-xl p-6 max-w-sm mx-auto">
+                                ${renderTeamDetails(match.team1)}
+                            </div>
+                            <div class="mt-4">
+                                <span class="inline-flex px-4 py-2 text-sm font-medium rounded-full bg-green-100 text-green-800">
+                                    Bye - Advanced
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (isWaiting) {
+                    return `
+                        <div class="bg-gray-50 rounded-2xl p-8 text-center border-2 border-gray-200">
+                            <h4 class="font-bold text-xl text-gray-900 mb-4">${match.matchId}</h4>
+                            <div class="text-gray-500 mb-4">Waiting for previous round results</div>
+                            <div class="inline-flex px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-600">
+                                Waiting
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                const cardClass = isFinal ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200' : 'bg-white border border-gray-100';
+                
+                return `
+                    <div class="${cardClass} rounded-2xl p-8">
+                        <div class="text-center mb-8">
+                            <h4 class="font-bold text-xl text-gray-900">${match.matchId}</h4>
+                            <div class="text-sm text-gray-500 mt-1">${getRoundDisplayName(match.round)}</div>
+                            ${isFinal ? '<div class="text-2xl mt-2">🏆</div>' : ''}
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-6 items-center">
+                            <!-- Team 1 -->
+                            <div class="relative">
+                                ${renderTeamCard(match.team1, match.winner === 'team1', isPending && !isCompleted, match.matchId, 'team1')}
+                            </div>
+                            
+                            <!-- VS Section -->
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                                    <span class="font-bold text-xl text-gray-600">VS</span>
+                                </div>
+                                ${renderMatchStatus(match)}
+                            </div>
+                            
+                            <!-- Team 2 -->
+                            <div class="relative">
+                                ${renderTeamCard(match.team2, match.winner === 'team2', isPending && !isCompleted, match.matchId, 'team2')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering match:', error);
+                return '<div class="text-red-500 p-4 border border-red-200 rounded">Error rendering match</div>';
+            }
+        }
+
+        function renderTeamCard(team, isWinner, canVote, matchId, teamSide) {
+            try {
+                if (!team) return '<div class="text-gray-400 text-center p-6 bg-gray-50 rounded-xl">TBD</div>';
+                
+                const winnerClass = isWinner ? 'ring-4 ring-green-400 bg-green-50' : '';
+                const hoverClass = canVote ? 'cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all' : '';
+                const onClick = canVote ? `onclick="setMatchWinner('${matchId}', '${teamSide}')"` : '';
+                
+                return `
+                    <div class="${winnerClass} ${hoverClass} bg-blue-50 rounded-xl p-6 relative" ${onClick}>
+                        ${isWinner ? '<div class="absolute -top-2 -right-2 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm">✓</div>' : ''}
+                        
+                        <div class="text-center mb-4">
+                            <div class="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold mx-auto mb-2">
+                                ${team.id + 1}
+                            </div>
+                            <h5 class="font-bold text-blue-900">${team.name}</h5>
+                        </div>
+                        
+                        ${renderTeamDetails(team)}
+                        
+                        ${canVote ? `
+                            <div class="mt-4 text-center">
+                                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                                    Select Winner
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering team card:', error);
+                return '<div class="text-red-500 p-4">Error rendering team</div>';
+            }
+        }
+
+        function renderTeamDetails(team) {
+            try {
+                if (!team || !team.data || !Array.isArray(team.data)) {
+                    console.log('⚠️ Team data tidak valid:', team);
+                    return '<div class="text-gray-500">Invalid team data</div>';
+                }
+                
+                return `
+                    <div class="space-y-2">
+                        ${team.data.map(peserta => `
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-700">${peserta.nama && peserta.nama.length > 15 ? peserta.nama.substring(0, 15) + '...' : (peserta.nama || 'Unknown')}</span>
+                                <span class="font-medium text-blue-600">${peserta.skor || 0}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-blue-200 text-center">
+                        <div class="font-bold text-blue-700">Total: ${team.score || 0}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Error rendering team details:', error);
+                return '<div class="text-red-500">Error loading team details</div>';
+            }
+        }
+
+        function renderMatchStatus(match) {
+            try {
+                if (!match) return '<div class="text-gray-500">No match data</div>';
+                
+                if (match.status === 'completed') {
+                    const winner = match.winner === 'team1' ? match.team1 : match.team2;
+                    return `
+                        <div class="inline-flex px-3 py-2 text-sm font-medium rounded-full bg-green-100 text-green-800">
+                            ✅ ${winner.name} Wins
+                        </div>
+                    `;
+                } else if (match.status === 'pending') {
+                    return `
+                        <div class="inline-flex px-3 py-2 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800">
+                            ⏳ Click team to select winner
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="inline-flex px-3 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-600">
+                            ⏸️ Waiting
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Error rendering match status:', error);
+                return '<div class="text-red-500">Error</div>';
+            }
+        }
+
+        function getRoundDisplayName(round) {
+            const names = {
+                'quarter': 'Quarterfinal',
+                'semi': 'Semifinal', 
+                'final': 'Final',
+                'third': 'Third Place',
+                'complete': 'Tournament Complete'
+            };
+            return names[round] || 'Unknown Round';
+        }
+
+        function getProgressPercentage() {
+            try {
+                if (!tournamentBracket.isGenerated) return 0;
+                
+                let completed = 0;
+                let total = 0;
+                
+                // Count quarterfinals
+                if (tournamentBracket.quarterFinals) {
+                    tournamentBracket.quarterFinals.forEach(match => {
+                        total++;
+                        if (match.status === 'completed' || match.status === 'bye') completed++;
+                    });
+                }
+                
+                // Count semifinals  
+                if (tournamentBracket.semiFinals) {
+                    tournamentBracket.semiFinals.forEach(match => {
+                        total++;
+                        if (match.status === 'completed' || match.status === 'bye') completed++;
+                    });
+                }
+                
+                // Count final
+                if (tournamentBracket.final) {
+                    total++;
+                    if (tournamentBracket.final.status === 'completed') completed++;
+                }
+                
+                // Count third place
+                if (tournamentBracket.thirdPlace) {
+                    total++;
+                    if (tournamentBracket.thirdPlace.status === 'completed' || tournamentBracket.thirdPlace.status === 'bye') completed++;
+                }
+                
+                return total > 0 ? Math.round((completed / total) * 100) : 0;
+            } catch (error) {
+                console.error('❌ Error calculating progress:', error);
+                return 0;
+            }
+        }
+
+        function resetTournament() {
+            if (confirm('🔄 Reset tournament? Semua progress akan hilang!')) {
+                tournamentBracket = {
+                    quarterFinals: [],
+                    semiFinals: [],
+                    final: null,
+                    champion: null,
+                    thirdPlace: null,
+                    isGenerated: false,
+                    currentRound: 'quarter'
+                };
+                
+                autoSaveTournamentData();
+                generateBagan();
+                showStorageNotification('Tournament berhasil direset!', 'info');
+            }
+        }
+
+        function showChampionCelebration() {
+            if (!tournamentBracket.champion) return;
+            
+            const champion = tournamentBracket.champion;
+            const thirdPlace = tournamentBracket.thirdPlaceWinner;
+            
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onclick="this.remove()">
+                    <div class="bg-white rounded-2xl p-8 max-w-lg w-full m-4 text-center max-h-96 overflow-y-auto" onclick="event.stopPropagation()">
+                        <div class="text-6xl mb-4">🏆</div>
+                        <h2 class="text-3xl font-bold text-yellow-600 mb-4">TOURNAMENT COMPLETE!</h2>
+                        
+                        <!-- Champion -->
+                        <div class="bg-yellow-50 rounded-xl p-6 mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">🥇 CHAMPION: ${champion.name}</h3>
+                            <div class="space-y-1 text-sm">
+                                ${champion.data.map(peserta => `
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-yellow-700">${peserta.nama}</span>
+                                        <span class="font-medium text-yellow-600">${peserta.skor}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="mt-3 pt-2 border-t border-yellow-200">
+                                <div class="font-bold text-yellow-700">Total Score: ${champion.score}</div>
+                            </div>
+                            <div class="bg-green-100 rounded-lg p-3 mt-3">
+                                <div class="text-lg mb-1">💰</div>
+                                <div class="font-bold text-green-800">Prize: Rp 200.000</div>
+                            </div>
+                        </div>
+                        
+                        ${thirdPlace ? `
+                        <!-- Third Place -->
+                        <div class="bg-orange-50 rounded-xl p-6 mb-4">
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">🥉 THIRD PLACE: ${thirdPlace.name}</h3>
+                            <div class="space-y-1 text-sm">
+                                ${thirdPlace.data.map(peserta => `
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-orange-700">${peserta.nama}</span>
+                                        <span class="font-medium text-orange-600">${peserta.skor}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="mt-3 pt-2 border-t border-orange-200">
+                                <div class="font-bold text-orange-700">Total Score: ${thirdPlace.score}</div>
+                            </div>
+                            <div class="bg-orange-100 rounded-lg p-3 mt-3">
+                                <div class="text-lg mb-1">💰</div>
+                                <div class="font-bold text-orange-800">Prize: Rp 40.000</div>
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        <button onclick="this.parentElement.parentElement.remove()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold transition-colors">
+                            Close Celebration
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-load data dari storage sebelum memuat UI
+            autoLoadTournamentData();
+            
+            // Load UI
+            loadPeserta();
+            loadKeuangan();
+            
+            // Update storage status indicator
+            updateStorageStatusIndicator();
+            
+            // Check storage warnings
+            checkStorageWarnings();
+            
+            // Auto-save setiap 30 detik untuk backup
+            setInterval(() => {
+                autoSaveTournamentData();
+                console.log('🔄 Auto-save backup selesai');
+            }, 30000);
+            
+            // Update storage indicator setiap menit
+            setInterval(() => {
+                updateStorageStatusIndicator();
+                checkStorageWarnings();
+            }, 60000);
+            
+            // Welcome notification - disembunyikan
+            // setTimeout(() => {
+            //     showStorageNotification('🗄️ Sistem penyimpanan canggih aktif! Data akan tersimpan 5 hari.', 'success');
+            // }, 1000);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + S untuk save manual
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    autoSaveTournamentData('manual');
+                }
+                
+                // Ctrl/Cmd + Shift + S untuk show storage panel - disembunyikan
+                // if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'S') {
+                //     e.preventDefault();
+                //     showStoragePanel();
+                // }
+                
+                // Ctrl/Cmd + E untuk export
+                if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                    e.preventDefault();
+                    exportTournamentData();
+                }
+            });
+            
+            // Show storage info pada console
+            console.log('🗄️ SIBAD Tournament Storage System berhasil diinisialisasi');
+            tempStorage.showStorageDashboard();
+        });
+
+        // ======================= BULK IMPORT FUNCTIONS =======================
+        
+        let importedData = [];
+
+        function showBulkImportModal() {
+            const modal = document.createElement('div');
+            modal.id = 'bulkImportModal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Impor Pemain Massal</h3>
+                        <button onclick="closeBulkImportModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+
+                    <!-- Import Options -->
+                    <div class="space-y-6">
+                        <!-- Template Download -->
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-blue-900 mb-2">Langkah 1: Unduh Template</h4>
+                            <p class="text-blue-700 text-sm mb-3">Unduh template Excel dan isi data pemain Anda.</p>
+                            <button onclick="downloadTemplate()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                📥 Unduh Template Excel
+                            </button>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-green-900 mb-2">Langkah 2: Upload Template yang Sudah Diisi</h4>
+                            <p class="text-green-700 text-sm mb-3">Upload file Excel (.xlsx) atau file CSV (.csv) yang sudah lengkap.</p>
+                            <input type="file" id="bulkImportFile" accept=".xlsx,.xls,.csv" onchange="handleFileUpload(event)" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-green-600 file:text-white hover:file:bg-green-700">
+                        </div>
+
+                        <!-- Manual CSV Input -->
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-yellow-900 mb-2">Alternatif: Input CSV Manual</h4>
+                            <p class="text-yellow-700 text-sm mb-3">Tempel data CSV langsung (Nama, Umur, Jenis Kelamin, Skor Keahlian)</p>
+                            <textarea id="csvInput" placeholder="John Doe,25,Pria,85&#10;Jane Smith,23,Wanita,78&#10;Mike Johnson,30,Pria,92" class="w-full h-24 p-3 border rounded-lg text-sm font-mono"></textarea>
+                            <button onclick="parseCSVInput()" class="mt-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                📝 Parse Data CSV
+                            </button>
+                        </div>
+
+                        <!-- Preview Area -->
+                        <div id="importPreview" class="hidden">
+                            <h4 class="font-medium text-gray-900 mb-3">Pratinjau Impor</h4>
+                            <div class="border rounded-lg overflow-hidden max-h-60 overflow-y-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 sticky top-0">
+                                        <tr>
+                                            <th class="px-3 py-2 text-left">Nama</th>
+                                            <th class="px-3 py-2 text-left">Umur</th>
+                                            <th class="px-3 py-2 text-left">Jenis Kelamin</th>
+                                            <th class="px-3 py-2 text-left">Skor Keahlian</th>
+                                            <th class="px-3 py-2 text-left">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="importPreviewBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4 flex justify-between items-center">
+                                <div class="text-sm text-gray-600">
+                                    <span id="validRowsCount">0</span> baris valid, 
+                                    <span id="errorRowsCount">0</span> kesalahan
+                                </div>
+                                <div class="flex gap-3">
+                                    <button onclick="cancelImport()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                        Batal
+                                    </button>
+                                    <button onclick="confirmImport()" id="confirmImportBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                        ✅ Impor Pemain
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function closeBulkImportModal() {
+            const modal = document.getElementById('bulkImportModal');
+            if (modal) {
+                modal.remove();
+            }
+            importedData = [];
+        }
+
+        function downloadTemplate() {
+            const csvContent = [
+                ['Name', 'Age', 'Gender', 'Skill Score'],
+                ['John Doe', '25', 'Male', '85'],
+                ['Jane Smith', '23', 'Female', '78'],
+                ['Mike Johnson', '30', 'Male', '92'],
+                ['Sarah Wilson', '27', 'Female', '88']
+            ].map(row => row.join(',')).join('\\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SIBAD_Player_Template.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showStorageNotification('📥 Template downloaded successfully!', 'success');
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                if (file.name.endsWith('.csv')) {
+                    parseCSVContent(content);
+                } else {
+                    showStorageNotification('📋 Excel files need to be converted to CSV first', 'warning');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSVInput() {
+            const csvInput = document.getElementById('csvInput');
+            const content = csvInput.value.trim();
+            if (!content) {
+                showStorageNotification('⚠️ Please enter CSV data', 'warning');
+                return;
+            }
+            parseCSVContent(content);
+        }
+
+        function parseCSVContent(content) {
+            const lines = content.split('\\n').filter(line => line.trim());
+            if (lines.length === 0) {
+                showStorageNotification('⚠️ No data found in the file', 'warning');
+                return;
+            }
+
+            // Skip header if first line contains 'Name' or similar
+            const startIndex = lines[0].toLowerCase().includes('name') ? 1 : 0;
+            const dataLines = lines.slice(startIndex);
+
+            importedData = [];
+            let validRows = 0;
+            let errorRows = 0;
+
+            const previewBody = document.getElementById('importPreviewBody');
+            previewBody.innerHTML = '';
+
+            dataLines.forEach((line, index) => {
+                const columns = line.split(',').map(col => col.trim().replace(/"/g, ''));
+                if (columns.length < 4) {
+                    errorRows++;
+                    return;
+                }
+
+                const [name, age, gender, skillScore] = columns;
+                const ageNum = parseInt(age);
+                const scoreNum = parseInt(skillScore);
+
+                let isValid = true;
+                let errorMessage = '';
+
+                // Validation
+                if (!name || name.length < 2) {
+                    isValid = false;
+                    errorMessage = 'Invalid name';
+                } else if (isNaN(ageNum) || ageNum < 10 || ageNum > 80) {
+                    isValid = false;
+                    errorMessage = 'Age must be 10-80';
+                } else if (!['male', 'female', 'pria', 'wanita', 'laki-laki', 'perempuan'].includes(gender.toLowerCase())) {
+                    isValid = false;
+                    errorMessage = 'Invalid gender';
+                } else if (isNaN(scoreNum) || scoreNum < 1 || scoreNum > 100) {
+                    isValid = false;
+                    errorMessage = 'Skill score must be 1-100';
+                }
+
+                // Check for duplicates
+                const existingPlayer = peserta.find(p => p.nama.toLowerCase() === name.toLowerCase());
+                if (existingPlayer) {
+                    isValid = false;
+                    errorMessage = 'Player already exists';
+                }
+
+                if (isValid) {
+                    validRows++;
+                    importedData.push({
+                        nama: name,
+                        umur: ageNum,
+                        jenisKelamin: normalizeGender(gender),
+                        skor: scoreNum
+                    });
+                } else {
+                    errorRows++;
+                }
+
+                // Add preview row
+                const row = document.createElement('tr');
+                row.className = isValid ? 'bg-green-50' : 'bg-red-50';
+                row.innerHTML = `
+                    <td class="px-3 py-2">${name}</td>
+                    <td class="px-3 py-2">${age}</td>
+                    <td class="px-3 py-2">${gender}</td>
+                    <td class="px-3 py-2">${skillScore}</td>
+                    <td class="px-3 py-2">
+                        <span class="${isValid ? 'text-green-600' : 'text-red-600'} text-xs font-medium">
+                            ${isValid ? '✅ Valid' : '❌ ' + errorMessage}
+                        </span>
+                    </td>
+                `;
+                previewBody.appendChild(row);
+            });
+
+            // Update counts
+            document.getElementById('validRowsCount').textContent = validRows;
+            document.getElementById('errorRowsCount').textContent = errorRows;
+
+            // Show preview
+            document.getElementById('importPreview').classList.remove('hidden');
+
+            // Enable/disable import button
+            const importBtn = document.getElementById('confirmImportBtn');
+            importBtn.disabled = validRows === 0;
+
+            showStorageNotification(`📊 Parsed ${validRows} valid players, ${errorRows} errors`, validRows > 0 ? 'success' : 'warning');
+        }
+
+        function normalizeGender(gender) {
+            const g = gender.toLowerCase();
+            if (['male', 'pria', 'laki-laki'].includes(g)) return 'Pria';
+            if (['female', 'wanita', 'perempuan'].includes(g)) return 'Wanita';
+            return gender;
+        }
+
+        function cancelImport() {
+            document.getElementById('importPreview').classList.add('hidden');
+            importedData = [];
+            document.getElementById('csvInput').value = '';
+            document.getElementById('bulkImportFile').value = '';
+        }
+
+        function confirmImport() {
+            if (importedData.length === 0) {
+                showStorageNotification('⚠️ No valid data to import', 'warning');
+                return;
+            }
+
+            // Add all valid players
+            importedData.forEach(playerData => {
+                peserta.push(playerData);
+            });
+
+            // Update display
+            loadPeserta();
+            
+            // Save to storage
+            autoSaveTournamentData('bulk-import');
+
+            showStorageNotification(`🎉 Successfully imported ${importedData.length} players!`, 'success');
+            
+            // Close modal
+            closeBulkImportModal();
+        }
+
+        // ======================= EXPORT FUNCTIONS =======================
+        
+        function exportPlayersData() {
+            if (peserta.length === 0) {
+                showStorageNotification('⚠️ No players to export', 'warning');
+                return;
+            }
+
+            const exportData = peserta.map((player, index) => [
+                index + 1,
+                player.nama,
+                player.umur,
+                player.jenisKelamin,
+                player.skor,
+                new Date().toLocaleDateString('id-ID')
+            ]);
+
+            const headers = ['No', 'Name', 'Age', 'Gender', 'Skill Score', 'Export Date'];
+            const csvContent = [headers, ...exportData]
+                .map(row => row.join(','))
+                .join('\\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SIBAD_Players_Export_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showStorageNotification(`📊 Exported ${peserta.length} players successfully!`, 'success');
+        }
+
+        // ======================= ADVANCED PLAYER MANAGEMENT =======================
+        
+        function clearAllPlayers() {
+            if (peserta.length === 0) {
+                showStorageNotification('⚠️ No players to clear', 'warning');
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete all ${peserta.length} players? This action cannot be undone.`)) {
+                peserta.splice(0, peserta.length);
+                loadPeserta();
+                autoSaveTournamentData('clear-all-players');
+                showStorageNotification('🗑️ All players have been removed', 'success');
+            }
+        }
+
+        function duplicatePlayer(playerIndex) {
+            if (!peserta[playerIndex]) return;
+            
+            const originalPlayer = peserta[playerIndex];
+            const duplicatedPlayer = {
+                nama: originalPlayer.nama + ' (Copy)',
+                umur: originalPlayer.umur,
+                jenisKelamin: originalPlayer.jenisKelamin,
+                skor: originalPlayer.skor
+            };
+            
+            peserta.push(duplicatedPlayer);
+            loadPeserta();
+            autoSaveTournamentData('duplicate-player');
+            showStorageNotification(`👥 Player "${originalPlayer.nama}" duplicated successfully!`, 'success');
+        }
+
+        function bulkUpdateScores() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Bulk Update Scores</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Update Type</label>
+                            <select id="updateType" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="add">Add to current scores</option>
+                                <option value="subtract">Subtract from current scores</option>
+                                <option value="set">Set all scores to value</option>
+                                <option value="multiply">Multiply scores by factor</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Value</label>
+                            <input type="number" id="updateValue" placeholder="Enter value" class="w-full p-3 border border-gray-300 rounded-lg" min="0" max="100">
+                        </div>
+                        
+                        <div class="text-sm text-gray-600">
+                            This will affect all ${peserta.length} players
+                        </div>
+                        
+                        <div class="flex gap-3 pt-4">
+                            <button onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </button>
+                            <button onclick="processBulkUpdate()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                                Update All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function processBulkUpdate() {
+            const updateType = document.getElementById('updateType').value;
+            const updateValue = parseFloat(document.getElementById('updateValue').value);
+            
+            if (isNaN(updateValue)) {
+                showStorageNotification('⚠️ Please enter a valid number', 'warning');
+                return;
+            }
+            
+            let updatedCount = 0;
+            
+            peserta.forEach(player => {
+                let newScore = player.skor;
+                
+                switch(updateType) {
+                    case 'add':
+                        newScore += updateValue;
+                        break;
+                    case 'subtract':
+                        newScore -= updateValue;
+                        break;
+                    case 'set':
+                        newScore = updateValue;
+                        break;
+                    case 'multiply':
+                        newScore *= updateValue;
+                        break;
+                }
+                
+                // Ensure score stays within bounds
+                newScore = Math.max(1, Math.min(100, Math.round(newScore)));
+                
+                if (newScore !== player.skor) {
+                    player.skor = newScore;
+                    updatedCount++;
+                }
+            });
+            
+            // Close modal
+            document.querySelector('.fixed.inset-0').remove();
+            
+            // Update display
+            loadPeserta();
+            autoSaveTournamentData('bulk-score-update');
+            
+            showStorageNotification(`📊 Updated scores for ${updatedCount} players!`, 'success');
+        }
+
+        function showPlayerStatistics() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            
+            // Calculate statistics
+            const totalPlayers = peserta.length;
+            const avgAge = totalPlayers > 0 ? (peserta.reduce((sum, p) => sum + p.umur, 0) / totalPlayers).toFixed(1) : 0;
+            const avgScore = totalPlayers > 0 ? (peserta.reduce((sum, p) => sum + p.skor, 0) / totalPlayers).toFixed(1) : 0;
+            const maleCount = peserta.filter(p => p.jenisKelamin === 'Pria').length;
+            const femaleCount = peserta.filter(p => p.jenisKelamin === 'Wanita').length;
+            const topPlayer = peserta.length > 0 ? peserta.reduce((max, p) => p.skor > max.skor ? p : max) : null;
+            const ageGroups = {
+                '10-20': peserta.filter(p => p.umur >= 10 && p.umur <= 20).length,
+                '21-30': peserta.filter(p => p.umur >= 21 && p.umur <= 30).length,
+                '31-40': peserta.filter(p => p.umur >= 31 && p.umur <= 40).length,
+                '40+': peserta.filter(p => p.umur > 40).length
+            };
+            
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">📊 Player Statistics</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- General Stats -->
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-blue-900 mb-3">General Statistics</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Total Players:</span>
+                                    <span class="font-bold">${totalPlayers}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Average Age:</span>
+                                    <span class="font-bold">${avgAge} years</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Average Skill Score:</span>
+                                    <span class="font-bold">${avgScore}/100</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gender Distribution -->
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-green-900 mb-3">Gender Distribution</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Male Players:</span>
+                                    <span class="font-bold">${maleCount} (${totalPlayers > 0 ? ((maleCount/totalPlayers)*100).toFixed(1) : 0}%)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Female Players:</span>
+                                    <span class="font-bold">${femaleCount} (${totalPlayers > 0 ? ((femaleCount/totalPlayers)*100).toFixed(1) : 0}%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Age Groups -->
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-yellow-900 mb-3">Age Groups</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>10-20 years:</span>
+                                    <span class="font-bold">${ageGroups['10-20']}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>21-30 years:</span>
+                                    <span class="font-bold">${ageGroups['21-30']}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>31-40 years:</span>
+                                    <span class="font-bold">${ageGroups['31-40']}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>40+ years:</span>
+                                    <span class="font-bold">${ageGroups['40+']}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Top Player -->
+                        ${topPlayer ? `
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-medium text-purple-900 mb-3">🏆 Top Player</h4>
+                            <div class="text-sm">
+                                <div class="font-bold text-purple-800">${topPlayer.nama}</div>
+                                <div class="text-purple-700">Score: ${topPlayer.skor}/100</div>
+                                <div class="text-purple-600">${topPlayer.jenisKelamin}, ${topPlayer.umur} years</div>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="exportPlayersData()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                            📊 Export Data
+                        </button>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // ======================= UTILITY FUNCTIONS =======================
+        
+        function shufflePlayers() {
+            if (peserta.length === 0) {
+                showStorageNotification('⚠️ No players to shuffle', 'warning');
+                return;
+            }
+
+            if (confirm(`Shuffle all ${peserta.length} players? This will randomize their order.`)) {
+                // Fisher-Yates shuffle algorithm
+                for (let i = peserta.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [peserta[i], peserta[j]] = [peserta[j], peserta[i]];
+                }
+                
+                loadPeserta();
+                autoSaveTournamentData('shuffle-players');
+                showStorageNotification('🎲 Players shuffled successfully!', 'success');
+            }
+        }
+
+        function sortPlayersByScore() {
+            if (peserta.length === 0) {
+                showStorageNotification('⚠️ No players to sort', 'warning');
+                return;
+            }
+
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Sort Players</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                            <select id="sortCriteria" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="score">Skill Score</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="age">Age</option>
+                                <option value="gender">Gender</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Order</label>
+                            <select id="sortOrder" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="desc">Highest to Lowest</option>
+                                <option value="asc">Lowest to Highest</option>
+                            </select>
+                        </div>
+                        
+                        <div class="text-sm text-gray-600">
+                            This will reorder all ${peserta.length} players
+                        </div>
+                        
+                        <div class="flex gap-3 pt-4">
+                            <button onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </button>
+                            <button onclick="processSorting()" class="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                                Sort Players
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function processSorting() {
+            const sortCriteria = document.getElementById('sortCriteria').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+            
+            peserta.sort((a, b) => {
+                let valueA, valueB;
+                
+                switch(sortCriteria) {
+                    case 'score':
+                        valueA = a.skor;
+                        valueB = b.skor;
+                        break;
+                    case 'name':
+                        valueA = a.nama.toLowerCase();
+                        valueB = b.nama.toLowerCase();
+                        break;
+                    case 'age':
+                        valueA = a.umur;
+                        valueB = b.umur;
+                        break;
+                    case 'gender':
+                        valueA = a.jenisKelamin;
+                        valueB = b.jenisKelamin;
+                        break;
+                    default:
+                        return 0;
+                }
+                
+                if (sortOrder === 'asc') {
+                    return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+                } else {
+                    return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+                }
+            });
+            
+            // Close modal
+            document.querySelector('.fixed.inset-0').remove();
+            
+            // Update display
+            loadPeserta();
+            autoSaveTournamentData('sort-players');
+            
+            const criteriaText = {
+                'score': 'skill score',
+                'name': 'name',
+                'age': 'age',
+                'gender': 'gender'
+            };
+            
+            showStorageNotification(`📈 Players sorted by ${criteriaText[sortCriteria]} (${sortOrder === 'desc' ? 'high to low' : 'low to high'})!`, 'success');
+        }
+
+        // ======================= CUSTOM EXPENSES MANAGEMENT =======================
+        
+        function showAddExpenseModal() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl lg:rounded-2xl responsive-padding max-w-md w-full modal-mobile">
+                    <div class="flex justify-between items-center mb-4 lg:mb-6">
+                        <h3 class="responsive-title font-semibold text-gray-900">Tambah Pengeluaran</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl touch-target">&times;</button>
+                    </div>
+                    
+                    <form onsubmit="addExpense(event)">
+                        <div class="space-y-3 lg:space-y-4">
+                            <div>
+                                <label class="block responsive-text font-medium text-gray-700 mb-2">Nama Pengeluaran *</label>
+                                <input type="text" id="expenseName" required 
+                                       class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 responsive-text touch-target focus-ring"
+                                       placeholder="Contoh: Beli makanan ringan">
+                            </div>
+                            
+                            <div>
+                                <label class="block responsive-text font-medium text-gray-700 mb-2">Kategori *</label>
+                                <select id="expenseCategory" required 
+                                        class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 responsive-text touch-target focus-ring">
+                                    <option value="">Pilih kategori</option>
+                                    <option value="Peralatan">🏸 Peralatan</option>
+                                    <option value="Hadiah">🏆 Hadiah</option>
+                                    <option value="Konsumsi">🍔 Konsumsi</option>
+                                    <option value="Transport">🚗 Transport</option>
+                                    <option value="Sewa Tempat">🏢 Sewa Tempat</option>
+                                    <option value="Operasional">⚙️ Operasional</option>
+                                    <option value="Dokumentasi">📸 Dokumentasi</option>
+                                    <option value="Lain-lain">📦 Lain-lain</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block responsive-text font-medium text-gray-700 mb-2">Jumlah (Rp) *</label>
+                                <input type="number" id="expenseAmount" required min="1000" step="1000"
+                                       class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 responsive-text touch-target focus-ring"
+                                       placeholder="Masukkan jumlah dalam rupiah">
+                            </div>
+                            
+                            <div>
+                                <label class="block responsive-text font-medium text-gray-700 mb-2">Tanggal</label>
+                                <input type="date" id="expenseDate" 
+                                       class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 responsive-text touch-target focus-ring"
+                                       value="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                            
+                            <div>
+                                <label class="block responsive-text font-medium text-gray-700 mb-2">Keterangan</label>
+                                <textarea id="expenseDescription" 
+                                          class="w-full px-3 py-2 lg:px-4 lg:py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 responsive-text touch-target focus-ring"
+                                          rows="2" placeholder="Keterangan tambahan (opsional)"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3 mt-6 lg:mt-8">
+                            <button type="button" onclick="this.closest('.fixed').remove()" 
+                                    class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-xl responsive-text font-medium transition-colors touch-target">
+                                Tambah Pengeluaran
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function addExpense(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('expenseName').value.trim();
+            const category = document.getElementById('expenseCategory').value;
+            const amount = parseInt(document.getElementById('expenseAmount').value);
+            const date = document.getElementById('expenseDate').value;
+            const description = document.getElementById('expenseDescription').value.trim();
+            
+            if (!name || !category || !amount) {
+                showStorageNotification('Semua field wajib harus diisi!', 'error');
+                return;
+            }
+            
+            // Add new expense
+            const newExpense = {
+                id: expenseIdCounter++,
+                nama: name,
+                kategori: category,
+                jumlah: amount,
+                tanggal: date,
+                keterangan: description
+            };
+            
+            customExpenses.push(newExpense);
+            
+            // Auto-save
+            autoSaveTournamentData('add-expense');
+            
+            // Refresh UI
+            loadKeuangan();
+            
+            // Close modal
+            event.target.closest('.fixed').remove();
+            
+            showStorageNotification(`Pengeluaran "${name}" berhasil ditambahkan!`, 'success');
+        }
+
+        function editExpense(expenseId) {
+            const expense = customExpenses.find(e => e.id === expenseId);
+            if (!expense) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Edit Pengeluaran</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+                    
+                    <form onsubmit="updateExpense(event, ${expenseId})">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nama Pengeluaran *</label>
+                                <input type="text" id="editExpenseName" required value="${expense.nama}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
+                                <select id="editExpenseCategory" required 
+                                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                                    <option value="Peralatan" ${expense.kategori === 'Peralatan' ? 'selected' : ''}>🏸 Peralatan</option>
+                                    <option value="Hadiah" ${expense.kategori === 'Hadiah' ? 'selected' : ''}>🏆 Hadiah</option>
+                                    <option value="Konsumsi" ${expense.kategori === 'Konsumsi' ? 'selected' : ''}>🍔 Konsumsi</option>
+                                    <option value="Transport" ${expense.kategori === 'Transport' ? 'selected' : ''}>🚗 Transport</option>
+                                    <option value="Sewa Tempat" ${expense.kategori === 'Sewa Tempat' ? 'selected' : ''}>🏢 Sewa Tempat</option>
+                                    <option value="Operasional" ${expense.kategori === 'Operasional' ? 'selected' : ''}>⚙️ Operasional</option>
+                                    <option value="Dokumentasi" ${expense.kategori === 'Dokumentasi' ? 'selected' : ''}>📸 Dokumentasi</option>
+                                    <option value="Lain-lain" ${expense.kategori === 'Lain-lain' ? 'selected' : ''}>📦 Lain-lain</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah (Rp) *</label>
+                                <input type="number" id="editExpenseAmount" required min="1000" step="1000" value="${expense.jumlah}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                                <input type="date" id="editExpenseDate" value="${expense.tanggal}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Keterangan</label>
+                                <textarea id="editExpenseDescription" 
+                                          class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                          rows="3">${expense.keterangan || ''}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="this.closest('.fixed').remove()" 
+                                    class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                                Perbarui
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function updateExpense(event, expenseId) {
+            event.preventDefault();
+            
+            const name = document.getElementById('editExpenseName').value.trim();
+            const category = document.getElementById('editExpenseCategory').value;
+            const amount = parseInt(document.getElementById('editExpenseAmount').value);
+            const date = document.getElementById('editExpenseDate').value;
+            const description = document.getElementById('editExpenseDescription').value.trim();
+            
+            if (!name || !category || !amount) {
+                showStorageNotification('Semua field wajib harus diisi!', 'error');
+                return;
+            }
+            
+            // Update expense
+            const expenseIndex = customExpenses.findIndex(e => e.id === expenseId);
+            if (expenseIndex !== -1) {
+                customExpenses[expenseIndex] = {
+                    id: expenseId,
+                    nama: name,
+                    kategori: category,
+                    jumlah: amount,
+                    tanggal: date,
+                    keterangan: description
+                };
+                
+                // Auto-save
+                autoSaveTournamentData('update-expense');
+                
+                // Refresh UI
+                loadKeuangan();
+                
+                // Close modal
+                event.target.closest('.fixed').remove();
+                
+                showStorageNotification(`Pengeluaran "${name}" berhasil diperbarui!`, 'success');
+            }
+        }
+
+        function deleteExpense(expenseId) {
+            const expense = customExpenses.find(e => e.id === expenseId);
+            if (!expense) return;
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus pengeluaran "${expense.nama}"?\n\nTindakan ini tidak dapat dibatalkan.`)) {
+                // Remove expense
+                const expenseIndex = customExpenses.findIndex(e => e.id === expenseId);
+                if (expenseIndex !== -1) {
+                    customExpenses.splice(expenseIndex, 1);
+                    
+                    // Auto-save
+                    autoSaveTournamentData('delete-expense');
+                    
+                    // Refresh UI
+                    loadKeuangan();
+                    
+                    showStorageNotification(`Pengeluaran "${expense.nama}" berhasil dihapus!`, 'success');
+                }
+            }
+        }
+
+        // Fungsi untuk edit pengeluaran lama
+        function editOldExpense(expenseIndex) {
+            const expense = pengeluaranData[expenseIndex];
+            if (!expense) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Edit Pengeluaran</h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                    </div>
+                    
+                    <form onsubmit="updateOldExpense(event, ${expenseIndex})">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nama Item *</label>
+                                <input type="text" id="editOldExpenseName" required value="${expense.item}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Icon *</label>
+                                <input type="text" id="editOldExpenseIcon" required value="${expense.icon}" maxlength="2"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                       placeholder="Contoh: 🏸">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah *</label>
+                                <input type="number" id="editOldExpenseQty" required min="1" value="${expense.jumlah}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Harga per Unit (Rp) *</label>
+                                <input type="number" id="editOldExpensePrice" required min="1000" step="1000" value="${expense.harga}"
+                                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            </div>
+                            
+                            <div>
+                                <div class="bg-gray-50 p-3 rounded-xl">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Total</label>
+                                    <div id="oldExpenseTotal" class="text-lg font-semibold text-gray-900">Rp ${expense.total.toLocaleString('id-ID')}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-3 mt-8">
+                            <button type="button" onclick="this.closest('.fixed').remove()" 
+                                    class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                                Batal
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                                Perbarui
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Add event listeners untuk real-time calculation
+            const qtyInput = document.getElementById('editOldExpenseQty');
+            const priceInput = document.getElementById('editOldExpensePrice');
+            const totalDisplay = document.getElementById('oldExpenseTotal');
+            
+            function updateTotal() {
+                const qty = parseInt(qtyInput.value) || 0;
+                const price = parseInt(priceInput.value) || 0;
+                const total = qty * price;
+                totalDisplay.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            }
+            
+            qtyInput.addEventListener('input', updateTotal);
+            priceInput.addEventListener('input', updateTotal);
+        }
+
+        function updateOldExpense(event, expenseIndex) {
+            event.preventDefault();
+            
+            const name = document.getElementById('editOldExpenseName').value.trim();
+            const icon = document.getElementById('editOldExpenseIcon').value.trim();
+            const qty = parseInt(document.getElementById('editOldExpenseQty').value);
+            const price = parseInt(document.getElementById('editOldExpensePrice').value);
+            
+            if (!name || !icon || !qty || !price) {
+                showStorageNotification('Semua field wajib harus diisi!', 'error');
+                return;
+            }
+            
+            const total = qty * price;
+            
+            // Update expense data
+            pengeluaranData[expenseIndex] = {
+                item: name,
+                icon: icon,
+                jumlah: qty,
+                harga: price,
+                total: total
+            };
+            
+            // Auto-save
+            autoSaveTournamentData('update-old-expense');
+            
+            // Refresh UI
+            loadKeuangan();
+            
+            // Close modal
+            event.target.closest('.fixed').remove();
+            
+            showStorageNotification(`Pengeluaran "${name}" berhasil diperbarui!`, 'success');
+        }
+
+        function deleteOldExpense(expenseIndex) {
+            const expense = pengeluaranData[expenseIndex];
+            if (!expense) return;
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus pengeluaran "${expense.item}"?\n\nTindakan ini tidak dapat dibatalkan.`)) {
+                // Remove expense
+                pengeluaranData.splice(expenseIndex, 1);
+                
+                // Auto-save
+                autoSaveTournamentData('delete-old-expense');
+                
+                // Refresh UI
+                loadKeuangan();
+                
+                showStorageNotification(`Pengeluaran "${expense.item}" berhasil dihapus!`, 'success');
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972e94b7512b40d4',t:'MTc1NTgyNTk3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
